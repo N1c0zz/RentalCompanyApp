@@ -2,7 +2,9 @@ package src.main.java.controller.DAOclasses;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.*;
 
 import src.main.java.controller.DBHandler.DataBaseHandler;
 
@@ -49,6 +51,33 @@ public class FatturaDAO {
             } catch (SQLException e) {
                 return e.getMessage();
             }
+    } 
+
+    public List<String> fatturatoMensile () {
+
+        String query = "SELECT DATE_FORMAT (data, '%Y-%m') AS mese_anno, SUM(importoTotale) AS fatturato_mensile" +
+                        " FROM fatture GROUP BY DATE_FORMAT(data, '%Y-%m') ORDER BY mese_anno";
+
+        List<String> lista = new ArrayList<>();
+
+        try (Connection conn = dbHandler.setSQLDataSource().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+                ResultSet rs = pstmt.executeQuery();
+
+                while(rs.next()) {
+                    String mese_anno = rs.getString("mese_anno");
+                    Float fatturato = rs.getFloat("fatturato_mensile");
+                    lista.add(mese_anno);
+                    lista.add(Float.toString(fatturato));
+                }
+                return lista;
+
+            } catch (SQLException e) {
+                lista.add(e.getMessage());
+                return lista;
+            }
+
+        
     }
     
 }

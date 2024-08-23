@@ -4,9 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.ArrayList;
 
 import src.main.java.controller.DBHandler.DataBaseHandler;
-import src.main.java.model.Noleggio;
 
 public class ClienteDAO {
     
@@ -50,12 +51,13 @@ public class ClienteDAO {
      * 
      * @param codiceFiscale
      */
-    public Noleggio storicoNoleggi (String codiceFiscale) {
+    public List<String> storicoNoleggi (String codiceFiscale) {
 
-        String query =  "SELECT * FROM noleggi WHERE codPrenotazione = (SELECT codPrenotazione" +
-                        " FROM prenotazioni WHERE cliente = ?)";
+        String query =  "SELECT n.codNoleggio, n.codPrenotazione, n.veicolo, n.costo, p.dataInizio, p.dataFine," +
+                        "p.statoPrenotazione FROM noleggi n JOIN prenotazioni p ON n.codPrenotazione = p.codPrenotazione" +
+                        " JOIN clienti c ON p.cliente = c.CFCLiente WHERE c.CFCliente = ? ORDER BY p.dataInizio DESC;";
 
-        Noleggio noleggioTemp = new Noleggio();
+        List<String> list = new ArrayList<>();
 
         try (Connection conn = dbHandler.setSQLDataSource().getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -64,25 +66,29 @@ public class ClienteDAO {
                 ResultSet rs = pstmt.executeQuery();
 
                 while(rs.next()){
-                    noleggioTemp.setCodNoleggio(rs.getInt("codNoleggio"));
-                    noleggioTemp.setCodPrenotazione(rs.getInt("codPrenotazione"));
-                    noleggioTemp.setIdVeicolo(rs.getInt("veicolo"));
-                    noleggioTemp.setCosto(rs.getFloat("costo"));
+                    list.add(rs.getString(Integer.parseInt("codNoleggio")));
+                    list.add(rs.getString(Integer.parseInt("codPrenotazione")));
+                    list.add(rs.getString(Integer.parseInt("veicolo")));
+                    list.add(rs.getString(Integer.parseInt("costo")));
+                    list.add(rs.getString("dataInizio"));
+                    list.add(rs.getString("dataFine"));
                 }
-                return noleggioTemp;
+                return list;
 
             } catch (SQLException e) {
-                noleggioTemp.setErrorMessage("ERRORE: " + e.getMessage());;
-                return noleggioTemp;
+                list.add(e.getMessage());
+                return list;
             }
     }
 
     /**
      * OP6 - VISUALIZZARE I 3 CLIENTI CON PIU NOLEGGI
      */
-    public void classificaClienti() {
+    public List<String> classificaClienti() {
 
         String query =  "SELECT CFCliente FROM clienti ORDER BY numeroNoleggiConclusi DESC LIMIT 3";
+
+        List<String> list = new ArrayList<>();
 
         try (Connection conn = dbHandler.setSQLDataSource().getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -90,12 +96,13 @@ public class ClienteDAO {
                 ResultSet rs = pstmt.executeQuery();
 
                 while(rs.next()){
-                    String codiceFiscale = rs.getString("CFCliente");
-                    System.out.println("CF CLIENTE: " + codiceFiscale);
+                    list.add(rs.getString("CFCliente"));
                 }
+                return list;
 
             } catch (SQLException e) {
-                e.printStackTrace();
+                list.add(e.getMessage());
+                return list;
             }
     }
 }

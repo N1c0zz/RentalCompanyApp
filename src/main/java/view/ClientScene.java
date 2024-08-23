@@ -1,14 +1,9 @@
 package src.main.java.view;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -17,7 +12,6 @@ import src.main.java.application.RentalCompanyApp;
 import src.main.java.controller.DAOclasses.ClienteDAO;
 import src.main.java.controller.DAOclasses.PersonaDAO;
 import src.main.java.controller.DBHandler.DataBaseHandler;
-import src.main.java.model.Noleggio;
 
 public class ClientScene {
 
@@ -121,39 +115,10 @@ public class ClientScene {
     }
 
     // Metodo per mostrare la vista dell'operazione 2
-    @SuppressWarnings("unchecked")
     private void clientOperazione2(BorderPane mainLayout) {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
         vbox.getChildren().add(new Label("Visualizza lo storico dei noleggi di un cliente"));
-        TextField CF = new TextField();
-        CF.setPromptText("Inserire il codice fiscale del cliente");
-        Button visualizzaStorico = new Button("Visualizza storico noleggi");
-        TextField response = new TextField();
-        response.setPromptText("Response");
-        response.setEditable(false);
-
-        TableView<Noleggio> table = new TableView<>();
-        TableColumn<Noleggio,String> codNoleggio = new TableColumn<>("Codice Noleggio");
-        codNoleggio.setCellValueFactory(cellData -> new SimpleStringProperty(Integer.toString(cellData.getValue().getCodNoleggio())));
-        TableColumn<Noleggio,String> codPrenotazione = new TableColumn<>("Codice Prenotazione");
-        codPrenotazione.setCellValueFactory(cellData -> new SimpleStringProperty(Integer.toString(cellData.getValue().getCodPrenotazione())));
-        TableColumn<Noleggio,String> veicolo = new TableColumn<>("Veicolo");
-        veicolo.setCellValueFactory(cellData -> new SimpleStringProperty(Integer.toString(cellData.getValue().getIdVeicolo())));
-        TableColumn<Noleggio,String> costo = new TableColumn<>("Costo");
-        costo.setCellValueFactory(cellData -> new SimpleStringProperty(Float.toString(cellData.getValue().getCosto())));
-
-        table.getColumns().addAll(codNoleggio, codPrenotazione, veicolo, costo);
-        vbox.getChildren().addAll(CF, visualizzaStorico, table, response);
-        visualizzaStorico.setOnAction(e -> {
-            Noleggio temp = cliente.storicoNoleggi(CF.getText());
-
-            ObservableList<Noleggio> data = FXCollections.observableArrayList(
-                temp
-            );
-            response.setText(temp.getErrorMessage());
-            table.setItems(data);
-        });
 
         mainLayout.setCenter(vbox);
     }

@@ -1,9 +1,14 @@
 package src.main.java.view;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -11,6 +16,7 @@ import javafx.scene.layout.VBox;
 import src.main.java.application.RentalCompanyApp;
 import src.main.java.controller.DAOclasses.FatturaDAO;
 import src.main.java.controller.DBHandler.DataBaseHandler;
+import java.util.*;
 
 public class InvoiceScene {
 
@@ -32,15 +38,13 @@ public class InvoiceScene {
         VBox sideMenu = new VBox(10);
         sideMenu.setPadding(new Insets(10));
         Button operazione1Button = new Button("Emttere una nuova fattura");
-        Button operazione2Button = new Button("Operazione Home 2");
-        Button operazione3Button = new Button("Operazione Home 3");
+        Button operazione2Button = new Button("Visualizza il fatturato mensile");
 
         // Imposta le azioni per i bottoni
         operazione1Button.setOnAction(e -> invoiceOperazione1(mainLayout));
         operazione2Button.setOnAction(e -> invoiceOperazione2(mainLayout));
-        operazione3Button.setOnAction(e -> invoiceOperazione3(mainLayout));
 
-        sideMenu.getChildren().addAll(operazione1Button, operazione2Button, operazione3Button);
+        sideMenu.getChildren().addAll(operazione1Button, operazione2Button);
 
         mainLayout.setTop(topMenu);
         mainLayout.setLeft(sideMenu);
@@ -77,23 +81,39 @@ public class InvoiceScene {
     }
 
     // Metodo per mostrare la vista dell'operazione 2
+    @SuppressWarnings("unchecked")
     private void invoiceOperazione2(BorderPane mainLayout) {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
-        vbox.getChildren().add(new Label("Operazione Home 2"));
-        vbox.getChildren().add(new TextField("Campo A"));
-        vbox.getChildren().add(new TextField("Campo B"));
+        vbox.getChildren().add(new Label("Visualizza il fatturato mensile"));
+        Button visualizzaFatturato = new Button("Visualizza fatturato mensile");
+        TextField response = new TextField();
+        response.setPromptText("Response");
+        response.setEditable(false);
 
-        mainLayout.setCenter(vbox);
-    }
+        TableView<List<String>> table = new TableView<>();
+        TableColumn<List<String>,String> mese_anno = new TableColumn<>("Mese e anno");
+        mese_anno.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(0)));
+        TableColumn<List<String>,String> fatturato = new TableColumn<>("Fatturato");
+        fatturato.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(1)));
 
-    // Metodo per mostrare la vista dell'operazione 3
-    private void invoiceOperazione3(BorderPane mainLayout) {
-        VBox vbox = new VBox(10);
-        vbox.setPadding(new Insets(10));
-        vbox.getChildren().add(new Label("Operazione Home 3"));
-        vbox.getChildren().add(new TextField("Campo X"));
-        vbox.getChildren().add(new TextField("Campo Y"));
+        table.getColumns().addAll(mese_anno, fatturato);
+        vbox.getChildren().addAll(visualizzaFatturato, table, response);
+        visualizzaFatturato.setOnAction(e -> {
+
+            List<String> lista = new ArrayList<>();
+            lista = fattura.fatturatoMensile();
+
+            if(lista.size() < 2){
+                response.setText(lista.get(0));
+            } else {
+                response.setText("");
+                ObservableList<List<String>> data = FXCollections.observableArrayList(
+                List.of(lista)
+            );
+            table.setItems(data);
+            }
+        });
 
         mainLayout.setCenter(vbox);
     }
