@@ -1,0 +1,23 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "javac",
+            "args": [
+                "--module-path",
+                "C:/Users/nicom/Documents/JavaFX_SDK/javafx-sdk-22.0.2/lib", // Sostituisci con il percorso corretto del tuo SDK JavaFX
+                "--add-modules",
+                "javafx.controls,javafx.fxml",
+                "-d",
+                "bin",
+                "src/main/java/application/RentalCompanyApp.java" // Sostituisci con il percorso corretto della tua classe Main
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
