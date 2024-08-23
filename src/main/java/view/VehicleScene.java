@@ -17,7 +17,8 @@ import src.main.java.application.RentalCompanyApp;
 import src.main.java.controller.DAOclasses.SchedaTecnicaDAO;
 import src.main.java.controller.DAOclasses.VeicoloDAO;
 import src.main.java.controller.DBHandler.DataBaseHandler;
-import src.main.java.model.classes.SchedaTecnica;
+import src.main.java.model.SchedaTecnica;
+
 import java.util.List;
 import java.util.ArrayList;
 

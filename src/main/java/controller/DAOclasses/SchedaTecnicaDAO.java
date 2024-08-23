@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import src.main.java.controller.DBHandler.DataBaseHandler;
-import src.main.java.model.classes.SchedaTecnica;
+import src.main.java.model.SchedaTecnica;
 
 public class SchedaTecnicaDAO {
 

@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import src.main.java.controller.DBHandler.DataBaseHandler;
-import src.main.java.model.classes.Noleggio;
+import src.main.java.model.Noleggio;
 
 public class ClienteDAO {
     

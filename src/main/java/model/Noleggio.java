@@ -1,4 +1,4 @@
-package src.main.java.model.classes;
+package src.main.java.model;
 
 public class Noleggio {
     

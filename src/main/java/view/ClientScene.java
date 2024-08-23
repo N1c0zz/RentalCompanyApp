@@ -17,7 +17,7 @@ import src.main.java.application.RentalCompanyApp;
 import src.main.java.controller.DAOclasses.ClienteDAO;
 import src.main.java.controller.DAOclasses.PersonaDAO;
 import src.main.java.controller.DBHandler.DataBaseHandler;
-import src.main.java.model.classes.Noleggio;
+import src.main.java.model.Noleggio;
 
 public class ClientScene {
 
