@@ -66,12 +66,11 @@ public class ClienteDAO {
                 ResultSet rs = pstmt.executeQuery();
 
                 while(rs.next()){
-                    list.add(rs.getString(Integer.parseInt("codNoleggio")));
-                    list.add(rs.getString(Integer.parseInt("codPrenotazione")));
-                    list.add(rs.getString(Integer.parseInt("veicolo")));
-                    list.add(rs.getString(Integer.parseInt("costo")));
-                    list.add(rs.getString("dataInizio"));
-                    list.add(rs.getString("dataFine"));
+                    list.add(rs.getString("codNoleggio") + "," + rs.getString("codPrenotazione")
+                            + "," + rs.getString("veicolo") + "," + rs.getString("costo") +
+                            "," + rs.getString("dataInizio") + "," + rs.getString("dataFine") + "," +
+                            rs.getString("statoPrenotazione"));
+
                 }
                 return list;
 

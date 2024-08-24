@@ -1,6 +1,7 @@
 package src.main.java.view;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -124,86 +125,115 @@ public class ClientScene {
 
     // Metodo per mostrare la vista dell'operazione 2
     @SuppressWarnings("unchecked")
-    private void clientOperazione2(BorderPane mainLayout) {
-        VBox vbox = new VBox(10);
-        vbox.setPadding(new Insets(10));
-        vbox.getChildren().add(new Label("Visualizza lo storico dei noleggi di un cliente"));
-        TextField codiceFiscale = new TextField();
-        codiceFiscale.setPromptText("Inserisci il codice fiscale del cliente");
-        Button visualizzaStorico = new Button("Visualizza storico noleggi");
-        TextField response = new TextField();
-        response.setPromptText("Response");
-        response.setEditable(false);
+private void clientOperazione2(BorderPane mainLayout) {
+    VBox vbox = new VBox(10);
+    vbox.setPadding(new Insets(10));
+    vbox.getChildren().add(new Label("Visualizza lo storico dei noleggi di un cliente"));
 
-        TableView<String> table = new TableView<>();
-        TableColumn<String,String> codNoleggio = new TableColumn<>("Codice Noleggio");
-        codNoleggio.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
-        TableColumn<String,String> codPrenotazione = new TableColumn<>("Codice Prenotazione");
-        codPrenotazione.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
-        TableColumn<String,String> veicolo = new TableColumn<>("Id Veicolo");
-        veicolo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
-        TableColumn<String,String> costo = new TableColumn<>("Costo");
-        costo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
-        TableColumn<String,String> dataInizio = new TableColumn<>("Data Inizio");
-        dataInizio.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
-        TableColumn<String,String> dataFine = new TableColumn<>("Data Fine");
-        dataFine.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
-        TableColumn<String,String> statoPrenotazione = new TableColumn<>("Stato Prenotazione");
-        statoPrenotazione.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
-        
-        table.getColumns().addAll(codNoleggio, codPrenotazione, veicolo, costo, dataInizio, dataFine, statoPrenotazione);
-        vbox.getChildren().addAll(codiceFiscale, visualizzaStorico, table, response);
-        visualizzaStorico.setOnAction(e -> {
+    TextField codiceFiscale = new TextField();
+    codiceFiscale.setPromptText("Inserisci il codice fiscale del cliente");
 
-            List<String> lista = new ArrayList<>();
-            lista = cliente.storicoNoleggi(codiceFiscale.getText());
-            if(lista.size() == 1) {
-                response.setText(lista.get(0));
+    Button visualizzaStorico = new Button("Visualizza storico noleggi");
+    TextField response = new TextField();
+    response.setPromptText("Response");
+    response.setEditable(false);
+
+    // TableView per visualizzare lo storico dei noleggi
+    TableView<List<String>> table = new TableView<>();
+
+    TableColumn<List<String>, String> codNoleggio = new TableColumn<>("Codice Noleggio");
+    codNoleggio.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(0)));
+
+    TableColumn<List<String>, String> codPrenotazione = new TableColumn<>("Codice Prenotazione");
+    codPrenotazione.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(1)));
+
+    TableColumn<List<String>, String> veicolo = new TableColumn<>("Id Veicolo");
+    veicolo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(2)));
+
+    TableColumn<List<String>, String> costo = new TableColumn<>("Costo");
+    costo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(3)));
+
+    TableColumn<List<String>, String> dataInizio = new TableColumn<>("Data Inizio");
+    dataInizio.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(4)));
+
+    TableColumn<List<String>, String> dataFine = new TableColumn<>("Data Fine");
+    dataFine.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(5)));
+
+    TableColumn<List<String>, String> statoPrenotazione = new TableColumn<>("Stato Prenotazione");
+    statoPrenotazione.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(6)));
+
+    table.getColumns().addAll(codNoleggio, codPrenotazione, veicolo, costo, dataInizio, dataFine, statoPrenotazione);
+
+    vbox.getChildren().addAll(codiceFiscale, visualizzaStorico, table, response);
+
+    visualizzaStorico.setOnAction(e -> {
+        List<String> flatList = cliente.storicoNoleggi(codiceFiscale.getText());
+        List<List<String>> lista = new ArrayList<>();
+
+        // Raggruppa i dati usando il delimitatore ";"
+        for (String record : flatList) {
+            // Divide ogni record in base al delimitatore
+            String[] values = record.split(",");
+            if (values.length == 7) { // Assicurati che ci siano esattamente 7 colonne
+                lista.add(Arrays.asList(values));
             } else {
-                response.setText("");
-                ObservableList<String> data = FXCollections.observableArrayList(lista);
-                table.setItems(data);
+                // Gestisci il caso in cui i dati non siano nel formato previsto
+                response.setText("Formato dei dati non valido: " + Arrays.toString(values));
             }
-        });
-        
-        mainLayout.setCenter(vbox);
-    }
+        }
+        if (lista.isEmpty()) {
+            response.setText("Nessun noleggio trovato per il codice fiscale specificato.");
+        } else {
+             response.setText("");
+            ObservableList<List<String>> data = FXCollections.observableArrayList(lista);
+            table.setItems(data);
+        }
+    });
+    mainLayout.setCenter(vbox);
+}
+
 
     // Metodo per mostrare la vista dell'operazione 3
     private void clientOperazione3(BorderPane mainLayout) {
+        // Configurazione della VBox come layout principale della vista
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
         vbox.getChildren().add(new Label("Visualizza i 10 clienti con più noleggi"));
-        Button visualizzaClienti = new Button("Visualizza migliori clienti");
+
+        // Creazione del TextField per mostrare eventuali messaggi di risposta
         TextField response = new TextField();
         response.setPromptText("Response");
         response.setEditable(false);
-    
-        // La TableView ora è di tipo String perché mostrerà singoli codici fiscali.
+
+        Button visualizzaClienti = new Button("Visualizza migliori clienti");
+
+        // Creazione della TableView per mostrare i Codici Fiscali dei clienti
         TableView<String> table = new TableView<>();
         TableColumn<String, String> CFcliente = new TableColumn<>("Codice Fiscale Cliente");
-    
-        // Imposta il value factory per ogni riga, che è semplicemente la stringa stessa.
+
+        // Configurazione del CellValueFactory per mostrare i dati correttamente
         CFcliente.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
-    
+
+        // Aggiunta della colonna alla TableView
         table.getColumns().add(CFcliente);
-        vbox.getChildren().addAll(visualizzaClienti, table, response);
     
+        // Aggiunta dei componenti alla VBox
+        vbox.getChildren().addAll(visualizzaClienti, table, response);
+
+        // Configurazione dell'azione del pulsante
         visualizzaClienti.setOnAction(e -> {
-            List<String> lista = cliente.classificaClienti();
-            if (lista.size() == 1) {
-                response.setText(lista.get(0));
+            List<String> lista = cliente.classificaClienti(); // Recupero della lista di clienti
+            if (lista.isEmpty()) {
+                response.setText("Nessun cliente trovato.");
+                table.setItems(FXCollections.observableArrayList()); // Pulisci la tabella
             } else {
                 response.setText("");
-    
-                // Converte la lista in una ObservableList e la imposta come items per la TableView.
                 ObservableList<String> data = FXCollections.observableArrayList(lista);
-                table.setItems(data);
+                table.setItems(data); // Popola la tabella con i dati
             }
         });
-    
+
+        // Imposta la VBox come contenuto principale del layout
         mainLayout.setCenter(vbox);
     }
-    
-    
 }

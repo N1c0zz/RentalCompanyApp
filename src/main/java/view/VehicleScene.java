@@ -19,6 +19,8 @@ import src.main.java.controller.DAOclasses.VeicoloDAO;
 import src.main.java.controller.DBHandler.DataBaseHandler;
 import src.main.java.model.SchedaTecnica;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class VehicleScene {
@@ -177,59 +179,111 @@ public class VehicleScene {
         response.setPromptText("Response");
         response.setEditable(false);
 
-        TableView<String> table = new TableView<>();
-        TableColumn<String,String> idVeicolo = new TableColumn<>("IdVeicolo");
-        idVeicolo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
-        TableColumn<String,String> mese_anno = new TableColumn<>("Mese e anno");
-        mese_anno.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
-        TableColumn<String,String> tassoUtilizzo = new TableColumn<>("Tasso di utilizzo");
-        tassoUtilizzo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
+        // TableView configurata per gestire liste di stringhe
+        TableView<List<String>> table = new TableView<>();
 
-        table.getColumns().addAll(idVeicolo, mese_anno, tassoUtilizzo);
+        // Configura le colonne
+        TableColumn<List<String>, String> idVeicoloCol = new TableColumn<>("Id Veicolo");
+        idVeicoloCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(0)));
+
+        TableColumn<List<String>, String> meseAnnoCol = new TableColumn<>("Mese e anno");
+        meseAnnoCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(1)));
+
+        TableColumn<List<String>, String> tassoUtilizzoCol = new TableColumn<>("Tasso di utilizzo");
+        tassoUtilizzoCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(2)));
+
+        table.getColumns().addAll(idVeicoloCol, meseAnnoCol, tassoUtilizzoCol);
         vbox.getChildren().addAll(visualizzaClassifica, table, response);
-        visualizzaClassifica.setOnAction(e -> {
-            ObservableList<String> data = FXCollections.observableArrayList(veicolo.veicoliPiuNoleggiati());
-            table.setItems(data);
-        });
 
-        mainLayout.setCenter(vbox);
-    }
+        visualizzaClassifica.setOnAction(e -> {
+            List<String> veicoli = veicolo.veicoliPiuNoleggiati(); // Presumo che questo metodo ritorni una lista di stringhe
+
+            if (veicoli.isEmpty()) {
+                response.setText("Nessun dato disponibile.");
+                table.setItems(FXCollections.observableArrayList()); // Pulisce la tabella
+            } else {
+                response.setText("");
+                List<List<String>> data = new ArrayList<>();
+
+            for (String veicoloData : veicoli) {
+                // Divide la stringa usando il delimitatore ";" (puoi cambiare il delimitatore se necessario)
+                String[] values = veicoloData.split(",");
+                data.add(Arrays.asList(values));
+            }
+
+            table.setItems(FXCollections.observableArrayList(data));
+        }
+    });
+
+    mainLayout.setCenter(vbox);
+}
+
 
     @SuppressWarnings("unchecked")
     private void vehicleOperazione5(BorderPane mainLayout) {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
         vbox.getChildren().add(new Label("Visualizza il tasso di utilizzo di un veicolo"));
+    
         TextField numVeicolo = new TextField();
         numVeicolo.setPromptText("Inserisci l'id del veicolo interessato");
+    
         Button visualizzaTassoUtilizzo = new Button("Visualizza tasso di utilizzo");
+    
         TextField response = new TextField();
         response.setPromptText("Response");
         response.setEditable(false);
-
-        TableView<String> table = new TableView<>();
-        TableColumn<String,String> idVeicolo = new TableColumn<>("IdVeicolo");
-        idVeicolo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
-        TableColumn<String,String> mese = new TableColumn<>("Mese");
-        mese.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
-        TableColumn<String,String> anno = new TableColumn<>("Anno");
-        anno.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
-        TableColumn<String,String> tassoUtilizzo = new TableColumn<>("Tasso di utilizzo");
-        tassoUtilizzo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
-
-        table.getColumns().addAll(idVeicolo, mese, anno, tassoUtilizzo);
+    
+        // TableView configurata per gestire liste di stringhe
+        TableView<List<String>> table = new TableView<>();
+    
+        // Configura le colonne
+        TableColumn<List<String>, String> idVeicoloCol = new TableColumn<>("Id Veicolo");
+        idVeicoloCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(0)));
+    
+        TableColumn<List<String>, String> meseCol = new TableColumn<>("Mese");
+        meseCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(1)));
+    
+        TableColumn<List<String>, String> annoCol = new TableColumn<>("Anno");
+        annoCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(2)));
+    
+        TableColumn<List<String>, String> tassoUtilizzoCol = new TableColumn<>("Tasso di utilizzo");
+        tassoUtilizzoCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(3)));
+    
+        table.getColumns().addAll(idVeicoloCol, meseCol, annoCol, tassoUtilizzoCol);
         vbox.getChildren().addAll(numVeicolo, visualizzaTassoUtilizzo, table, response);
+    
         visualizzaTassoUtilizzo.setOnAction(e -> {
-
-            List<String> lista = veicolo.tassoDiUtilizzo(Integer.parseInt(numVeicolo.getText()));
-            if(lista.isEmpty()){
-                response.setText("Questo veicolo non è mai stato utilizzato");
-            } else {
-                response.setText("");
-                ObservableList<String> data = FXCollections.observableArrayList(lista);
-                table.setItems(data);
+            try {
+                int id = Integer.parseInt(numVeicolo.getText());
+                List<String> lista = veicolo.tassoDiUtilizzo(id);
+    
+                if (lista.isEmpty()) {
+                    response.setText("Questo veicolo non è mai stato utilizzato.");
+                    table.setItems(FXCollections.observableArrayList()); // Pulisce la tabella
+                } else {
+                    response.setText("");
+                    List<List<String>> data = new ArrayList<>();
+    
+                    for (String veicoloData : lista) {
+                        // Divide la stringa usando il delimitatore specifico (ad esempio, la virgola)
+                        String[] values = veicoloData.split(","); // Cambia il delimitatore se necessario
+                        if (values.length == 4) { // Assumendo che ci siano esattamente 4 valori
+                            data.add(Arrays.asList(values));
+                        } else {
+                            // Gestisci il caso di errore se necessario
+                            System.err.println("Formato stringa non valido: " + veicoloData);
+                        }
+                    }
+    
+                    table.setItems(FXCollections.observableArrayList(data));
+                }
+            } catch (NumberFormatException ex) {
+                response.setText("ID veicolo non valido.");
             }
         });
+    
         mainLayout.setCenter(vbox);
     }
+    
 }   

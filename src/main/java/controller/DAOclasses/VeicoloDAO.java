@@ -68,10 +68,8 @@ public class VeicoloDAO {
                     int mese = rs.getInt("mese");
                     int anno = rs.getInt("anno");
                     float tassoUtilizzo = rs.getFloat("tasso_utilizzo_mensile");
-                    lista.add(Integer.toString(idVeicolo));
-                    lista.add(Integer.toString(mese));
-                    lista.add(Integer.toString(anno));
-                    lista.add(Float.toString(tassoUtilizzo));
+                    lista.add(Integer.toString(idVeicolo) + "," + Integer.toString(mese) + "," + 
+                                Integer.toString(anno) + "," + Float.toString(tassoUtilizzo));
                 }
                 return lista;
 
@@ -104,9 +102,7 @@ public class VeicoloDAO {
                     int idVeicolo = rs.getInt("idVeicolo");
                     String mese_e_anno = rs.getString("mese_anno");
                     float tassoUtilizzo = rs.getFloat("tasso_utilizzo_mensile");
-                    lista.add(Integer.toString(idVeicolo));
-                    lista.add(mese_e_anno);
-                    lista.add(Float.toString(tassoUtilizzo));
+                    lista.add(Integer.toString(idVeicolo) + "," + mese_e_anno + "," + Float.toString(tassoUtilizzo));
                 }
                 return lista;
                 } catch (SQLException e) {

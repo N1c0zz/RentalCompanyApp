@@ -21,10 +21,12 @@ public class StartScene {
         Label userLabel = new Label("Nome utente:");
         TextField usernameField = new TextField();
         usernameField.setPromptText("Inserisci nome utente");
+        usernameField.setMaxWidth(200);
 
         Label passLabel = new Label("Password:");
         PasswordField passwordField = new PasswordField();
         passwordField.setPromptText("Inserisci password");
+        passwordField.setMaxWidth(200);
 
         Label messageLabel = new Label(); // Per mostrare eventuali messaggi di errore
 
@@ -51,7 +53,7 @@ public class StartScene {
     // Metodo di esempio per la verifica delle credenziali
     private boolean authenticate(String username, String password) {
         // Questo è solo un esempio; sostituisci con la tua logica di autenticazione.
-        return "admin".equals(username) && "password".equals(password);
+        return "1".equals(username) && "1".equals(password);
     }
 }
 

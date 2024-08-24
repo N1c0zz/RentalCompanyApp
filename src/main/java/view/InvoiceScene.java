@@ -18,6 +18,8 @@ import src.main.java.controller.DAOclasses.FatturaDAO;
 import src.main.java.controller.DBHandler.DataBaseHandler;
 import java.util.*;
 
+import javafx.util.Pair;
+
 public class InvoiceScene {
 
     private RentalCompanyApp app;
@@ -86,30 +88,45 @@ public class InvoiceScene {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
         vbox.getChildren().add(new Label("Visualizza il fatturato mensile"));
+
         Button visualizzaFatturato = new Button("Visualizza fatturato mensile");
         TextField response = new TextField();
         response.setPromptText("Response");
         response.setEditable(false);
 
-        TableView<String> table = new TableView<>();
-        TableColumn<String,String> mese_anno = new TableColumn<>("Mese e anno");
-        mese_anno.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
-        TableColumn<String,String> fatturato = new TableColumn<>("Fatturato");
-        fatturato.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
+        // TableView per visualizzare i dati di fatturato mensile
+        TableView<Pair<String, String>> table = new TableView<>();
 
-        table.getColumns().addAll(mese_anno, fatturato);
+        TableColumn<Pair<String, String>, String> meseAnnoCol = new TableColumn<>("Mese e anno");
+        meseAnnoCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getKey()));
+
+        TableColumn<Pair<String, String>, String> fatturatoCol = new TableColumn<>("Fatturato");
+        fatturatoCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getValue()));
+
+        table.getColumns().addAll(meseAnnoCol, fatturatoCol);
         vbox.getChildren().addAll(visualizzaFatturato, table, response);
-        visualizzaFatturato.setOnAction(e -> {
 
+        visualizzaFatturato.setOnAction(e -> {
             List<String> lista = fattura.fatturatoMensile();
-            if(lista.size() < 2){
-                response.setText(lista.get(0));
+
+            if (lista.size() == 1) {
+            response.setText(lista.get(0)); // Messaggio di errore o informazione
             } else {
                 response.setText("");
-                ObservableList<String> data = FXCollections.observableArrayList(lista);
-            table.setItems(data);
+                List<Pair<String, String>> data = new ArrayList<>();
+
+                // Supponendo che la lista alterni mese/anno e fatturato
+                for (int i = 0; i < lista.size(); i += 2) {
+                    String meseAnno = lista.get(i);
+                    String fatturato = lista.get(i + 1);
+                    data.add(new Pair<>(meseAnno, fatturato));
+                }
+
+                ObservableList<Pair<String, String>> observableData = FXCollections.observableArrayList(data);
+                table.setItems(observableData);
             }
         });
+
         mainLayout.setCenter(vbox);
     }
 }
