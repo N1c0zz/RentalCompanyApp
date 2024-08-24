@@ -91,30 +91,25 @@ public class InvoiceScene {
         response.setPromptText("Response");
         response.setEditable(false);
 
-        TableView<List<String>> table = new TableView<>();
-        TableColumn<List<String>,String> mese_anno = new TableColumn<>("Mese e anno");
-        mese_anno.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(0)));
-        TableColumn<List<String>,String> fatturato = new TableColumn<>("Fatturato");
-        fatturato.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(1)));
+        TableView<String> table = new TableView<>();
+        TableColumn<String,String> mese_anno = new TableColumn<>("Mese e anno");
+        mese_anno.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
+        TableColumn<String,String> fatturato = new TableColumn<>("Fatturato");
+        fatturato.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
 
         table.getColumns().addAll(mese_anno, fatturato);
         vbox.getChildren().addAll(visualizzaFatturato, table, response);
         visualizzaFatturato.setOnAction(e -> {
 
-            List<String> lista = new ArrayList<>();
-            lista = fattura.fatturatoMensile();
-
+            List<String> lista = fattura.fatturatoMensile();
             if(lista.size() < 2){
                 response.setText(lista.get(0));
             } else {
                 response.setText("");
-                ObservableList<List<String>> data = FXCollections.observableArrayList(
-                List.of(lista)
-            );
+                ObservableList<String> data = FXCollections.observableArrayList(lista);
             table.setItems(data);
             }
         });
-
         mainLayout.setCenter(vbox);
     }
 }

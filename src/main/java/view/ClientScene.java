@@ -135,21 +135,21 @@ public class ClientScene {
         response.setPromptText("Response");
         response.setEditable(false);
 
-        TableView<List<String>> table = new TableView<>();
-        TableColumn<List<String>,String> codNoleggio = new TableColumn<>("Codice Noleggio");
-        codNoleggio.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(0)));
-        TableColumn<List<String>,String> codPrenotazione = new TableColumn<>("Codice Prenotazione");
-        codPrenotazione.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(1)));
-        TableColumn<List<String>,String> veicolo = new TableColumn<>("Id Veicolo");
-        veicolo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(2)));
-        TableColumn<List<String>,String> costo = new TableColumn<>("Costo");
-        costo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(3)));
-        TableColumn<List<String>,String> dataInizio = new TableColumn<>("Data Inizio");
-        dataInizio.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(4)));
-        TableColumn<List<String>,String> dataFine = new TableColumn<>("Data Fine");
-        dataFine.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(5)));
-        TableColumn<List<String>,String> statoPrenotazione = new TableColumn<>("Stato Prenotazione");
-        statoPrenotazione.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(6)));
+        TableView<String> table = new TableView<>();
+        TableColumn<String,String> codNoleggio = new TableColumn<>("Codice Noleggio");
+        codNoleggio.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
+        TableColumn<String,String> codPrenotazione = new TableColumn<>("Codice Prenotazione");
+        codPrenotazione.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
+        TableColumn<String,String> veicolo = new TableColumn<>("Id Veicolo");
+        veicolo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
+        TableColumn<String,String> costo = new TableColumn<>("Costo");
+        costo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
+        TableColumn<String,String> dataInizio = new TableColumn<>("Data Inizio");
+        dataInizio.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
+        TableColumn<String,String> dataFine = new TableColumn<>("Data Fine");
+        dataFine.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
+        TableColumn<String,String> statoPrenotazione = new TableColumn<>("Stato Prenotazione");
+        statoPrenotazione.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
         
         table.getColumns().addAll(codNoleggio, codPrenotazione, veicolo, costo, dataInizio, dataFine, statoPrenotazione);
         vbox.getChildren().addAll(codiceFiscale, visualizzaStorico, table, response);
@@ -161,9 +161,7 @@ public class ClientScene {
                 response.setText(lista.get(0));
             } else {
                 response.setText("");
-                ObservableList<List<String>> data = FXCollections.observableArrayList(
-                    List.of(lista)
-                );
+                ObservableList<String> data = FXCollections.observableArrayList(lista);
                 table.setItems(data);
             }
         });
@@ -180,28 +178,32 @@ public class ClientScene {
         TextField response = new TextField();
         response.setPromptText("Response");
         response.setEditable(false);
-
-        TableView<List<String>> table = new TableView<>();
-        TableColumn<List<String>,String> CFcliente = new TableColumn<>("Codice Fiscale Cliente");
-        CFcliente.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(0)));
-
+    
+        // La TableView ora è di tipo String perché mostrerà singoli codici fiscali.
+        TableView<String> table = new TableView<>();
+        TableColumn<String, String> CFcliente = new TableColumn<>("Codice Fiscale Cliente");
+    
+        // Imposta il value factory per ogni riga, che è semplicemente la stringa stessa.
+        CFcliente.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
+    
         table.getColumns().add(CFcliente);
         vbox.getChildren().addAll(visualizzaClienti, table, response);
-
+    
         visualizzaClienti.setOnAction(e -> {
             List<String> lista = cliente.classificaClienti();
-            if(lista.size() == 1) {
+            if (lista.size() == 1) {
                 response.setText(lista.get(0));
             } else {
                 response.setText("");
-                ObservableList<List<String>> data = FXCollections.observableArrayList(
-                    List.of(lista)
-                );
+    
+                // Converte la lista in una ObservableList e la imposta come items per la TableView.
+                ObservableList<String> data = FXCollections.observableArrayList(lista);
                 table.setItems(data);
             }
         });
-
+    
         mainLayout.setCenter(vbox);
     }
+    
     
 }

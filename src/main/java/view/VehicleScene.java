@@ -20,7 +20,6 @@ import src.main.java.controller.DBHandler.DataBaseHandler;
 import src.main.java.model.SchedaTecnica;
 
 import java.util.List;
-import java.util.ArrayList;
 
 public class VehicleScene {
 
@@ -178,20 +177,18 @@ public class VehicleScene {
         response.setPromptText("Response");
         response.setEditable(false);
 
-        TableView<List<String>> table = new TableView<>();
-        TableColumn<List<String>,String> idVeicolo = new TableColumn<>("IdVeicolo");
-        idVeicolo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(0)));
-        TableColumn<List<String>,String> mese_anno = new TableColumn<>("Mese e anno");
-        mese_anno.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(1)));
-        TableColumn<List<String>,String> tassoUtilizzo = new TableColumn<>("Tasso di utilizzo");
-        tassoUtilizzo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(2)));
+        TableView<String> table = new TableView<>();
+        TableColumn<String,String> idVeicolo = new TableColumn<>("IdVeicolo");
+        idVeicolo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
+        TableColumn<String,String> mese_anno = new TableColumn<>("Mese e anno");
+        mese_anno.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
+        TableColumn<String,String> tassoUtilizzo = new TableColumn<>("Tasso di utilizzo");
+        tassoUtilizzo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
 
         table.getColumns().addAll(idVeicolo, mese_anno, tassoUtilizzo);
         vbox.getChildren().addAll(visualizzaClassifica, table, response);
         visualizzaClassifica.setOnAction(e -> {
-            ObservableList<List<String>> data = FXCollections.observableArrayList(
-                List.of(veicolo.veicoliPiuNoleggiati())
-            );
+            ObservableList<String> data = FXCollections.observableArrayList(veicolo.veicoliPiuNoleggiati());
             table.setItems(data);
         });
 
@@ -210,34 +207,29 @@ public class VehicleScene {
         response.setPromptText("Response");
         response.setEditable(false);
 
-        TableView<List<String>> table = new TableView<>();
-        TableColumn<List<String>,String> idVeicolo = new TableColumn<>("IdVeicolo");
-        idVeicolo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(0)));
-        TableColumn<List<String>,String> mese = new TableColumn<>("Mese");
-        mese.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(1)));
-        TableColumn<List<String>,String> anno = new TableColumn<>("Anno");
-        anno.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(2)));
-        TableColumn<List<String>,String> tassoUtilizzo = new TableColumn<>("Tasso di utilizzo");
-        tassoUtilizzo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(3)));
+        TableView<String> table = new TableView<>();
+        TableColumn<String,String> idVeicolo = new TableColumn<>("IdVeicolo");
+        idVeicolo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
+        TableColumn<String,String> mese = new TableColumn<>("Mese");
+        mese.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
+        TableColumn<String,String> anno = new TableColumn<>("Anno");
+        anno.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
+        TableColumn<String,String> tassoUtilizzo = new TableColumn<>("Tasso di utilizzo");
+        tassoUtilizzo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
 
         table.getColumns().addAll(idVeicolo, mese, anno, tassoUtilizzo);
         vbox.getChildren().addAll(numVeicolo, visualizzaTassoUtilizzo, table, response);
         visualizzaTassoUtilizzo.setOnAction(e -> {
 
-            List<String> lista = new ArrayList<>();
-            lista = veicolo.tassoDiUtilizzo(Integer.parseInt(numVeicolo.getText()));
-
+            List<String> lista = veicolo.tassoDiUtilizzo(Integer.parseInt(numVeicolo.getText()));
             if(lista.isEmpty()){
                 response.setText("Questo veicolo non è mai stato utilizzato");
             } else {
                 response.setText("");
-                ObservableList<List<String>> data = FXCollections.observableArrayList(
-                List.of(lista)
-            );
-            table.setItems(data);
+                ObservableList<String> data = FXCollections.observableArrayList(lista);
+                table.setItems(data);
             }
         });
-
         mainLayout.setCenter(vbox);
     }
 }   
