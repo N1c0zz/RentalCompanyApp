@@ -82,11 +82,11 @@ public class ClienteDAO {
     }
 
     /**
-     * OP6 - VISUALIZZARE I 3 CLIENTI CON PIU NOLEGGI
+     * OP6 - VISUALIZZARE I 10 CLIENTI CON PIU NOLEGGI
      */
     public List<String> classificaClienti() {
 
-        String query =  "SELECT CFCliente FROM clienti ORDER BY numeroNoleggiConclusi DESC LIMIT 3";
+        String query =  "SELECT CFCliente FROM clienti ORDER BY numeroNoleggiConclusi DESC LIMIT 10";
 
         List<String> list = new ArrayList<>();
 
@@ -98,6 +98,7 @@ public class ClienteDAO {
                 while(rs.next()){
                     list.add(rs.getString("CFCliente"));
                 }
+                System.out.println(list);
                 return list;
 
             } catch (SQLException e) {

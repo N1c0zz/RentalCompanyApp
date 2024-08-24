@@ -173,7 +173,7 @@ public class VehicleScene {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
         vbox.getChildren().add(new Label("Visualizza i veicoli più noleggiati"));
-        Button visualizzaClassifica = new Button("Visualizza i 3 veicoli più noleggiati");
+        Button visualizzaClassifica = new Button("Visualizza i veicoli più noleggiati");
         TextField response = new TextField();
         response.setPromptText("Response");
         response.setEditable(false);

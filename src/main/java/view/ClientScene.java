@@ -1,9 +1,17 @@
 package src.main.java.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -35,7 +43,7 @@ public class ClientScene {
         sideMenu.setPadding(new Insets(10));
         Button operazione1Button = new Button("Registrare un nuovo cliente");
         Button operazione2Button = new Button("Visualizza lo storico noleggi di un cliente");
-        Button operazione3Button = new Button("Operazione Home 3");
+        Button operazione3Button = new Button("Visualizza i 10 migliori clienti");
 
         // Imposta le azioni per i bottoni
         operazione1Button.setOnAction(e -> clientOperazione1(mainLayout));
@@ -115,11 +123,51 @@ public class ClientScene {
     }
 
     // Metodo per mostrare la vista dell'operazione 2
+    @SuppressWarnings("unchecked")
     private void clientOperazione2(BorderPane mainLayout) {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
         vbox.getChildren().add(new Label("Visualizza lo storico dei noleggi di un cliente"));
+        TextField codiceFiscale = new TextField();
+        codiceFiscale.setPromptText("Inserisci il codice fiscale del cliente");
+        Button visualizzaStorico = new Button("Visualizza storico noleggi");
+        TextField response = new TextField();
+        response.setPromptText("Response");
+        response.setEditable(false);
 
+        TableView<List<String>> table = new TableView<>();
+        TableColumn<List<String>,String> codNoleggio = new TableColumn<>("Codice Noleggio");
+        codNoleggio.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(0)));
+        TableColumn<List<String>,String> codPrenotazione = new TableColumn<>("Codice Prenotazione");
+        codPrenotazione.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(1)));
+        TableColumn<List<String>,String> veicolo = new TableColumn<>("Id Veicolo");
+        veicolo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(2)));
+        TableColumn<List<String>,String> costo = new TableColumn<>("Costo");
+        costo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(3)));
+        TableColumn<List<String>,String> dataInizio = new TableColumn<>("Data Inizio");
+        dataInizio.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(4)));
+        TableColumn<List<String>,String> dataFine = new TableColumn<>("Data Fine");
+        dataFine.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(5)));
+        TableColumn<List<String>,String> statoPrenotazione = new TableColumn<>("Stato Prenotazione");
+        statoPrenotazione.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(6)));
+        
+        table.getColumns().addAll(codNoleggio, codPrenotazione, veicolo, costo, dataInizio, dataFine, statoPrenotazione);
+        vbox.getChildren().addAll(codiceFiscale, visualizzaStorico, table, response);
+        visualizzaStorico.setOnAction(e -> {
+
+            List<String> lista = new ArrayList<>();
+            lista = cliente.storicoNoleggi(codiceFiscale.getText());
+            if(lista.size() == 1) {
+                response.setText(lista.get(0));
+            } else {
+                response.setText("");
+                ObservableList<List<String>> data = FXCollections.observableArrayList(
+                    List.of(lista)
+                );
+                table.setItems(data);
+            }
+        });
+        
         mainLayout.setCenter(vbox);
     }
 
@@ -127,9 +175,31 @@ public class ClientScene {
     private void clientOperazione3(BorderPane mainLayout) {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
-        vbox.getChildren().add(new Label("Operazione Home 3"));
-        vbox.getChildren().add(new TextField("Campo X"));
-        vbox.getChildren().add(new TextField("Campo Y"));
+        vbox.getChildren().add(new Label("Visualizza i 10 clienti con più noleggi"));
+        Button visualizzaClienti = new Button("Visualizza migliori clienti");
+        TextField response = new TextField();
+        response.setPromptText("Response");
+        response.setEditable(false);
+
+        TableView<List<String>> table = new TableView<>();
+        TableColumn<List<String>,String> CFcliente = new TableColumn<>("Codice Fiscale Cliente");
+        CFcliente.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(0)));
+
+        table.getColumns().add(CFcliente);
+        vbox.getChildren().addAll(visualizzaClienti, table, response);
+
+        visualizzaClienti.setOnAction(e -> {
+            List<String> lista = cliente.classificaClienti();
+            if(lista.size() == 1) {
+                response.setText(lista.get(0));
+            } else {
+                response.setText("");
+                ObservableList<List<String>> data = FXCollections.observableArrayList(
+                    List.of(lista)
+                );
+                table.setItems(data);
+            }
+        });
 
         mainLayout.setCenter(vbox);
     }
