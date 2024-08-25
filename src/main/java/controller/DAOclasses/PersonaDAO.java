@@ -13,13 +13,12 @@ public class PersonaDAO {
     public PersonaDAO(DataBaseHandler dbHandler) {
         this.dbHandler = dbHandler;
     }
-
     /**
      * OP4 - REGISTRARE UNA NUOVA PERSONA
      * 
      * @param persona
      */
-    public String addPerson(String CF, String nome, String cognome, String via, int civico, String citta,
+    public String aggiungiPersona(String CF, String nome, String cognome, String via, int civico, String citta,
                             String CAP, String numeroTelefono, String indirizzoEmail) {
         String query = "INSERT INTO persone (codiceFiscale, nome, cognome, indirizzo_via, indirizzo_numeroCivico, indirizzo_città,"+ 
                         "indirizzo_CAP, numeroDiTelefono, indirizzoEmail) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";

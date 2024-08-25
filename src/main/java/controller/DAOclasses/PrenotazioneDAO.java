@@ -13,7 +13,6 @@ public class PrenotazioneDAO {
     public PrenotazioneDAO (DataBaseHandler dbHandler) {
         this.dbHandler = dbHandler;
     }
-
     /**
      * OP7 - REGISTRARE UNA NUOVA PRENOTAZIONE
      * Metodo che registra una prenotazione con un solo
@@ -45,7 +44,6 @@ public class PrenotazioneDAO {
                 return e.getMessage();
             }
     }
-
     /**
      * OP7 - REGISTRARE UNA NUOVA PRENOTAZIONE
      * Metodo che registra una prenotazione con 2
@@ -78,9 +76,8 @@ public class PrenotazioneDAO {
                 return e.getMessage();
             }
     }
-
     /**
-     * OP8 - MODIFICARE/CANCELLARE UNA PRENOTAZIONE
+     * OP8 - MODIFICARE UNA PRENOTAZIONE
      * Modifica una prenotazione cambiando dataInizio e
      * dataFine.
      * 
@@ -112,7 +109,7 @@ public class PrenotazioneDAO {
     }
 
     /**
-     * OP8 - MODIFICARE/CANCELLARE UNA PRENOTAZIONE
+     * OP9 - CANCELLARE UNA PRENOTAZIONE
      * Eliminare la prenotazione rispettiva al codPrenotazione
      * inserito.
      * 

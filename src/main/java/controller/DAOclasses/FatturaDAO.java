@@ -15,9 +15,8 @@ public class FatturaDAO {
     public FatturaDAO(DataBaseHandler dbHandler) {
         this.dbHandler = dbHandler;
     }
-
     /**
-     * OP13 - EMETTERE UNA NUOVA FATTURA
+     * OP14 - EMETTERE UNA NUOVA FATTURA
      *
      * @param metodoDiPagamento
      * @param numeroPrenotazione
@@ -52,7 +51,11 @@ public class FatturaDAO {
                 return e.getMessage();
             }
     } 
-
+    /**
+     * OP16 - VISUALIZZARE IL FATTURATO MENSILE
+     * 
+     * @return lista di stringhe.
+     */
     public List<String> fatturatoMensile () {
 
         String query = "SELECT DATE_FORMAT (data, '%Y-%m') AS mese_anno, SUM(importoTotale) AS fatturato_mensile" +
@@ -76,8 +79,5 @@ public class FatturaDAO {
                 lista.add(e.getMessage());
                 return lista;
             }
-
-        
     }
-    
 }

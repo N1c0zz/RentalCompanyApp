@@ -25,33 +25,26 @@ public class RentScene {
     public Scene createRentScene() {
         BorderPane mainLayout = new BorderPane();
 
-        // Menu superiore
         HBox topMenu = new TopMenu(app).createTopMenu(mainLayout);
-
-        // Menu laterale per le sotto-operazioni
         VBox sideMenu = new VBox(10);
         sideMenu.setPadding(new Insets(10));
         Button operazione1Button = new Button("Attivare un nuovo noleggio");
         Button operazione2Button = new Button("Termina un noleggio");
 
-        // Imposta le azioni per i bottoni
-        operazione1Button.setOnAction(e -> rentOperazione1(mainLayout));
-        operazione2Button.setOnAction(e -> rentOperazione2(mainLayout));
+        operazione1Button.setOnAction(e -> attivaNoleggio(mainLayout));
+        operazione2Button.setOnAction(e -> terminaNoleggio(mainLayout));
 
         sideMenu.getChildren().addAll(operazione1Button, operazione2Button);
 
         mainLayout.setTop(topMenu);
         mainLayout.setLeft(sideMenu);
-
-        // Contenuto principale iniziale
         Label homeLabel = new Label("Sezione Noleggi");
         mainLayout.setCenter(homeLabel);
 
         return new Scene(mainLayout, 800, 600);
     }
 
-    // Metodo per mostrare la vista dell'operazione 1
-    private void rentOperazione1(BorderPane mainLayout) {
+    private void attivaNoleggio(BorderPane mainLayout) {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
         vbox.getChildren().add(new Label("Attiva un nuovo noleggio per una prenotazione"));
@@ -71,7 +64,6 @@ public class RentScene {
         attivaNoleggio.setOnAction(e -> {
             String codicePrenotazioneInput = codPrenotazione.getText().trim();
     
-            // Controllo sul codice della prenotazione
             if (codicePrenotazioneInput.isEmpty()) {
                 response.setText("Errore: Il codice della prenotazione non può essere vuoto.");
                 return;
@@ -85,8 +77,7 @@ public class RentScene {
                 return;
             }
     
-            // Se tutti i controlli sono passati, attiva il noleggio
-            String risultato = noleggio.attivazioneNoleggio(codicePrenotazione);
+            String risultato = noleggio.attivaNoleggio(codicePrenotazione);
             response.setText(risultato);
         });
     
@@ -94,8 +85,7 @@ public class RentScene {
     }
     
 
-    // Metodo per mostrare la vista dell'operazione 2
-    private void rentOperazione2(BorderPane mainLayout) {
+    private void terminaNoleggio(BorderPane mainLayout) {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
         vbox.getChildren().add(new Label("Termina un noleggio"));
@@ -115,7 +105,6 @@ public class RentScene {
         terminaNoleggio.setOnAction(e -> {
             String codiceNoleggioInput = codNoleggio.getText().trim();
     
-            // Controllo sul codice di noleggio
             if (codiceNoleggioInput.isEmpty()) {
                 response.setText("Errore: Il codice del noleggio non può essere vuoto.");
                 return;
@@ -129,7 +118,6 @@ public class RentScene {
                 return;
             }
     
-            // Se tutti i controlli sono passati, termina il noleggio
             String risultato = noleggio.terminaNoleggio(codiceNoleggio);
             response.setText(risultato);
         });

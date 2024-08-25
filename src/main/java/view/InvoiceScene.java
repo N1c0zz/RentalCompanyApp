@@ -33,33 +33,28 @@ public class InvoiceScene {
     public Scene createInvoiceScene() {
         BorderPane mainLayout = new BorderPane();
 
-        // Menu superiore
         HBox topMenu = new TopMenu(app).createTopMenu(mainLayout);
 
-        // Menu laterale per le sotto-operazioni
         VBox sideMenu = new VBox(10);
         sideMenu.setPadding(new Insets(10));
         Button operazione1Button = new Button("Emettere una nuova fattura");
         Button operazione2Button = new Button("Visualizza il fatturato mensile");
 
-        // Imposta le azioni per i bottoni
-        operazione1Button.setOnAction(e -> invoiceOperazione1(mainLayout));
-        operazione2Button.setOnAction(e -> invoiceOperazione2(mainLayout));
+        operazione1Button.setOnAction(e -> emettiFattura(mainLayout));
+        operazione2Button.setOnAction(e -> fatturatoMensile(mainLayout));
 
         sideMenu.getChildren().addAll(operazione1Button, operazione2Button);
 
         mainLayout.setTop(topMenu);
         mainLayout.setLeft(sideMenu);
 
-        // Contenuto principale iniziale
         Label homeLabel = new Label("Sezione Fatture");
         mainLayout.setCenter(homeLabel);
 
         return new Scene(mainLayout, 800, 600);
     }
 
-    // Metodo per mostrare la vista dell'operazione 1
-    private void invoiceOperazione1(BorderPane mainLayout) {
+    private void emettiFattura(BorderPane mainLayout) {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
         vbox.getChildren().add(new Label("Compila una nuova fattura per una prenotazione"));
@@ -83,7 +78,6 @@ public class InvoiceScene {
             String codicePrenotazioneInput = codPrenotazione.getText().trim();
             String metodoDiPagamentoInput = metodoDiPagamento.getText().trim();
     
-            // Controllo sul codice della prenotazione
             if (codicePrenotazioneInput.isEmpty()) {
                 response.setText("Errore: Il codice della prenotazione non può essere vuoto.");
                 return;
@@ -97,13 +91,11 @@ public class InvoiceScene {
                 return;
             }
     
-            // Controllo sul metodo di pagamento
             if (metodoDiPagamentoInput.isEmpty()) {
                 response.setText("Errore: Il metodo di pagamento non può essere vuoto.");
                 return;
             }
     
-            // Se tutti i controlli sono passati, emetti la fattura
             String risultato = fattura.emettiFattura(metodoDiPagamentoInput, codicePrenotazione);
             response.setText(risultato);
         });
@@ -111,10 +103,8 @@ public class InvoiceScene {
         mainLayout.setCenter(vbox);
     }
     
-
-    // Metodo per mostrare la vista dell'operazione 2
     @SuppressWarnings("unchecked")
-    private void invoiceOperazione2(BorderPane mainLayout) {
+    private void fatturatoMensile(BorderPane mainLayout) {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
         vbox.getChildren().add(new Label("Visualizza il fatturato mensile"));
@@ -124,7 +114,6 @@ public class InvoiceScene {
         response.setPromptText("Response");
         response.setEditable(false);
 
-        // TableView per visualizzare i dati di fatturato mensile
         TableView<Pair<String, String>> table = new TableView<>();
 
         TableColumn<Pair<String, String>, String> meseAnnoCol = new TableColumn<>("Mese e anno");
@@ -140,12 +129,11 @@ public class InvoiceScene {
             List<String> lista = fattura.fatturatoMensile();
 
             if (lista.size() == 1) {
-            response.setText(lista.get(0)); // Messaggio di errore o informazione
+            response.setText(lista.get(0));
             } else {
                 response.setText("");
                 List<Pair<String, String>> data = new ArrayList<>();
 
-                // Supponendo che la lista alterni mese/anno e fatturato
                 for (int i = 0; i < lista.size(); i += 2) {
                     String meseAnno = lista.get(i);
                     String fatturato = lista.get(i + 1);

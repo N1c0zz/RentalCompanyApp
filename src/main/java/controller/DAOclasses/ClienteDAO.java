@@ -22,7 +22,7 @@ public class ClienteDAO {
      * 
      * @param cliente
      */
-    public String addClient(String CF, String patente, String via, int numeroCivico, String citta, String CAP) {
+    public String aggiungiCliente(String CF, String patente, String via, int numeroCivico, String citta, String CAP) {
         String query = "INSERT INTO clienti (CFCliente, numeroPatenteGuida, indirizzoFatturazione_via, indirizzoFatturazione_numeroCivico,"+ 
                         "indirizzoFatturazione_città, indirizzoFatturazione_CAP) VALUES (?, ?, ?, ?, ?, ?)"; 
         try (Connection conn = dbHandler.setSQLDataSource().getConnection();

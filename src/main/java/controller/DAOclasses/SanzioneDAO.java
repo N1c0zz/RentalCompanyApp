@@ -13,15 +13,14 @@ public class SanzioneDAO {
     public SanzioneDAO(DataBaseHandler dbHandler) {
         this.dbHandler = dbHandler;
     }
-    
     /**
-     * OP14 - EMETTERE UNA SANZIONE RELATIVA AD UNA PRENOTAZIONE
+     * OP15 - EMETTERE UNA SANZIONE RELATIVA AD UNA PRENOTAZIONE
      * 
      * @param codPrenotazione
      * @param motivazione
      * @param costoApplicato
      */
-    public String emissioneSanzione(int codPrenotazione, String motivazione, float costoApplicato) {
+    public String emettiSanzione(int codPrenotazione, String motivazione, float costoApplicato) {
 
         String query1 = "INSERT INTO sanzioni (motivazione, costoApplicato) VALUES (?, ?)";
 

@@ -16,13 +16,12 @@ public class VeicoloDAO {
     public VeicoloDAO(DataBaseHandler dbHandler) {
         this.dbHandler = dbHandler;
     }
-    
     /**
      * OP1--REGISTRARE UN NUOVO VEICOLO
      * 
      * @param veicolo
      */
-    public String addVehicle(int schedaTecnica, String targa, int chilometraggio, float costoPerGiornata) {
+    public String aggiungiVeicolo(int schedaTecnica, String targa, int chilometraggio, float costoPerGiornata) {
 
         String query = "INSERT INTO veicoli (schedaTecnica, targa, chilometraggio, costoPerGiornata) VALUES (?, ?, ?, ?)";
         try (Connection conn = dbHandler.setSQLDataSource().getConnection();
@@ -43,9 +42,8 @@ public class VeicoloDAO {
                 return e.getMessage();
             }
     }
-
     /*
-     * OP11 - TASSO DI UTILIZZO DI UN VEICOLO
+     * OP12 - TASSO DI UTILIZZO DI UN VEICOLO
      */
     public List<String> tassoDiUtilizzo(int idveicolo) {
 
@@ -78,9 +76,8 @@ public class VeicoloDAO {
                 return lista;
             }
     }
-
     /**
-     * OP12 - VISUALIZZARE I VEICOLI PIU NOLEGGIATI
+     * OP13 - VISUALIZZARE I VEICOLI PIU NOLEGGIATI
      */
     public List<String> veicoliPiuNoleggiati() {
 
@@ -110,7 +107,6 @@ public class VeicoloDAO {
                     return lista;
                 }
     }
-
     /**
      * 
      * OP2 - VISUALIZZARE LA DISPONIBILITA' DI UN VEICOLO

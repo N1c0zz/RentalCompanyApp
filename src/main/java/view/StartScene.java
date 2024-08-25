@@ -17,7 +17,6 @@ public class StartScene {
     }
 
     public Scene createStartScene() {
-        // Creazione dei campi di input per nome utente e password
         Label userLabel = new Label("Nome utente:");
         TextField usernameField = new TextField();
         usernameField.setPromptText("Inserisci nome utente");
@@ -28,14 +27,13 @@ public class StartScene {
         passwordField.setPromptText("Inserisci password");
         passwordField.setMaxWidth(200);
 
-        Label messageLabel = new Label(); // Per mostrare eventuali messaggi di errore
+        Label messageLabel = new Label();
 
         Button loginButton = new Button("Accedi");
         loginButton.setOnAction(e -> {
             String username = usernameField.getText();
             String password = passwordField.getText();
             
-            // Simula la verifica delle credenziali (da sostituire con la logica reale)
             if (authenticate(username, password)) {
                 app.getPrimaryStage().setScene(new ClientScene(app).createClientScene());
             } else {
@@ -50,9 +48,7 @@ public class StartScene {
         return startScene;
     }
 
-    // Metodo di esempio per la verifica delle credenziali
     private boolean authenticate(String username, String password) {
-        // Questo è solo un esempio; sostituisci con la tua logica di autenticazione.
         return "1".equals(username) && "1".equals(password);
     }
 }

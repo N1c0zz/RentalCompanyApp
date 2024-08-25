@@ -39,10 +39,8 @@ public class VehicleScene {
     public Scene createVehicleScene() {
         BorderPane mainLayout = new BorderPane();
 
-        // Menu superiore
         HBox topMenu = new TopMenu(app).createTopMenu(mainLayout);
 
-        // Menu laterale per le sotto-operazioni
         VBox sideMenu = new VBox(10);
         sideMenu.setPadding(new Insets(10));
         Button operazione1Button = new Button("Registrazione di un nuovo veicolo");
@@ -51,12 +49,11 @@ public class VehicleScene {
         Button operazione4Button = new Button("Veicoli più noleggiati");
         Button operazione5Button = new Button("Tasso di utilizzo di un veicolo");
 
-        // Imposta le azioni per i bottoni
-        operazione1Button.setOnAction(e -> vehicleOperazione1(mainLayout));
-        operazione2Button.setOnAction(e -> vehicleOperazione2(mainLayout));
-        operazione3Button.setOnAction(e -> vehicleOperazione3(mainLayout));
-        operazione4Button.setOnAction(e -> vehicleOperazione4(mainLayout));
-        operazione5Button.setOnAction(e -> vehicleOperazione5(mainLayout));
+        operazione1Button.setOnAction(e -> registraVeicolo(mainLayout));
+        operazione2Button.setOnAction(e -> disponibilitaVeicolo(mainLayout));
+        operazione3Button.setOnAction(e -> schedaTecnicaVeicolo(mainLayout));
+        operazione4Button.setOnAction(e -> veicoliPiuNoleggiati(mainLayout));
+        operazione5Button.setOnAction(e -> tassoUtilizzoVeicolo(mainLayout));
 
         sideMenu.getChildren().addAll(operazione1Button, operazione2Button, operazione3Button, 
                                         operazione4Button, operazione5Button);
@@ -64,15 +61,13 @@ public class VehicleScene {
         mainLayout.setTop(topMenu);
         mainLayout.setLeft(sideMenu);
 
-        // Contenuto principale iniziale
         Label homeLabel = new Label("Sezione Veicoli");
         mainLayout.setCenter(homeLabel);
 
         return new Scene(mainLayout, 800, 600);
     }
 
-    // Metodo per mostrare la vista dell'operazione 1
-    private void vehicleOperazione1(BorderPane mainLayout) {
+    private void registraVeicolo(BorderPane mainLayout) {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
         vbox.getChildren().add(new Label("Registra qui un nuovo veicolo"));
@@ -99,7 +94,6 @@ public class VehicleScene {
         vbox.getChildren().addAll(numeroSchedaTecnica, targa, chilometraggio, costoPerGiornata, aggiungiVeicolo, response);
     
         aggiungiVeicolo.setOnAction(e -> {
-            // Controllo sul numero scheda tecnica
             String numeroSchedaTecnicaStr = numeroSchedaTecnica.getText().trim();
             if (numeroSchedaTecnicaStr.isEmpty()) {
                 response.setText("Errore: Il numero della scheda tecnica non può essere vuoto.");
@@ -114,15 +108,12 @@ public class VehicleScene {
                 return;
             }
     
-            // Controllo sulla targa
             String targaStr = targa.getText().trim();
             if (targaStr.isEmpty()) {
                 response.setText("Errore: La targa del veicolo non può essere vuota.");
                 return;
             }
-            // Qui si potrebbe aggiungere un controllo di formato se necessario
     
-            // Controllo sul chilometraggio
             String chilometraggioStr = chilometraggio.getText().trim();
             int chilometraggioInt;
             try {
@@ -136,7 +127,6 @@ public class VehicleScene {
                 return;
             }
     
-            // Controllo sul costo per giornata
             String costoPerGiornataStr = costoPerGiornata.getText().trim();
             float costo;
             try {
@@ -149,18 +139,15 @@ public class VehicleScene {
                 response.setText("Errore: Il costo per giornata deve essere un numero valido.");
                 return;
             }
-    
-            // Se tutti i controlli sono passati, registra il veicolo
-            String risultato = veicolo.addVehicle(numeroScheda, targaStr, chilometraggioInt, costo);
+
+            String risultato = veicolo.aggiungiVeicolo(numeroScheda, targaStr, chilometraggioInt, costo);
             response.setText(risultato);
         });
     
         mainLayout.setCenter(vbox);
     }
     
-
-    // Metodo per mostrare la vista dell'operazione 2
-    private void vehicleOperazione2(BorderPane mainLayout) {
+    private void disponibilitaVeicolo(BorderPane mainLayout) {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
         vbox.getChildren().add(new Label("Controlla la disponibilità di un veicolo"));
@@ -184,7 +171,6 @@ public class VehicleScene {
         vbox.getChildren().addAll(idVeicolo, dataInizio, dataFine, verificaDisponibilita, response);
 
         verificaDisponibilita.setOnAction(e -> {
-            // Controllo sull'ID del veicolo
             String idVeicoloStr = idVeicolo.getText().trim();
             if (idVeicoloStr.isEmpty()) {
                 response.setText("Errore: L'ID del veicolo non può essere vuoto.");
@@ -199,7 +185,6 @@ public class VehicleScene {
                 return;
             }
 
-            // Controllo sulla data di inizio
             String dataInizioStr = dataInizio.getText().trim();
             LocalDate dataInizioDate;
             try {
@@ -209,7 +194,6 @@ public class VehicleScene {
                 return;
             }
 
-            // Controllo sulla data di fine
             String dataFineStr = dataFine.getText().trim();
             LocalDate dataFineDate;
             try {
@@ -219,13 +203,11 @@ public class VehicleScene {
                 return;
             }
 
-            // Verifica che la data di fine non sia precedente alla data di inizio
             if (dataFineDate.isBefore(dataInizioDate)) {
                 response.setText("Errore: La data di fine non può essere precedente alla data di inizio.");
                 return;
             }
 
-            // Se tutti i controlli sono passati, verifica la disponibilità del veicolo
             String risultato = veicolo.verificaDisponibilitaVeicolo(id, dataInizioStr, dataFineStr);
             response.setText(risultato);
         });
@@ -233,10 +215,8 @@ public class VehicleScene {
         mainLayout.setCenter(vbox);
     }
 
-
-    // Metodo per mostrare la vista dell'operazione 3
     @SuppressWarnings("unchecked")
-    private void vehicleOperazione3(BorderPane mainLayout) {
+    private void schedaTecnicaVeicolo(BorderPane mainLayout) {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
         vbox.getChildren().add(new Label("Visualizza la scheda tecnica di un veicolo"));
@@ -283,7 +263,6 @@ public class VehicleScene {
         visualizzaScheda.setOnAction(e -> {
             String idVeicoloStr = idVeicolo.getText().trim();
     
-            // Controllo sull'ID del veicolo
             if (idVeicoloStr.isEmpty()) {
                 response.setText("Errore: L'ID del veicolo non può essere vuoto.");
                 return;
@@ -297,8 +276,7 @@ public class VehicleScene {
                 return;
             }
     
-            // Recupero della scheda tecnica
-            SchedaTecnica scheda = schedaTecnica.getSchedaTecnica(id);
+            SchedaTecnica scheda = schedaTecnica.ottieniSchedaTecnica(id);
             if (scheda == null) {
                 response.setText("Errore: Nessuna scheda tecnica trovata per l'ID del veicolo specificato.");
                 table.getItems().clear();
@@ -314,7 +292,7 @@ public class VehicleScene {
     
 
     @SuppressWarnings("unchecked")
-    private void vehicleOperazione4(BorderPane mainLayout) {
+    private void veicoliPiuNoleggiati(BorderPane mainLayout) {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
         vbox.getChildren().add(new Label("Visualizza i veicoli più noleggiati"));
@@ -323,10 +301,8 @@ public class VehicleScene {
         response.setPromptText("Response");
         response.setEditable(false);
 
-        // TableView configurata per gestire liste di stringhe
         TableView<List<String>> table = new TableView<>();
 
-        // Configura le colonne
         TableColumn<List<String>, String> idVeicoloCol = new TableColumn<>("Id Veicolo");
         idVeicoloCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(0)));
 
@@ -340,17 +316,16 @@ public class VehicleScene {
         vbox.getChildren().addAll(visualizzaClassifica, table, response);
 
         visualizzaClassifica.setOnAction(e -> {
-            List<String> veicoli = veicolo.veicoliPiuNoleggiati(); // Presumo che questo metodo ritorni una lista di stringhe
+            List<String> veicoli = veicolo.veicoliPiuNoleggiati();
 
             if (veicoli.isEmpty()) {
                 response.setText("Nessun dato disponibile.");
-                table.setItems(FXCollections.observableArrayList()); // Pulisce la tabella
+                table.setItems(FXCollections.observableArrayList());
             } else {
                 response.setText("");
                 List<List<String>> data = new ArrayList<>();
 
             for (String veicoloData : veicoli) {
-                // Divide la stringa usando il delimitatore ";" (puoi cambiare il delimitatore se necessario)
                 String[] values = veicoloData.split(",");
                 data.add(Arrays.asList(values));
             }
@@ -364,7 +339,7 @@ public class VehicleScene {
 
 
     @SuppressWarnings("unchecked")
-    private void vehicleOperazione5(BorderPane mainLayout) {
+    private void tassoUtilizzoVeicolo(BorderPane mainLayout) {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
         vbox.getChildren().add(new Label("Visualizza il tasso di utilizzo di un veicolo"));
@@ -398,7 +373,6 @@ public class VehicleScene {
         visualizzaTassoUtilizzo.setOnAction(e -> {
             String idVeicoloStr = numVeicolo.getText().trim();
             
-            // Controllo sull'ID del veicolo
             if (idVeicoloStr.isEmpty()) {
                 response.setText("Errore: L'ID del veicolo non può essere vuoto.");
                 return;
@@ -416,13 +390,12 @@ public class VehicleScene {
     
             if (lista == null || lista.isEmpty()) {
                 response.setText("Questo veicolo non è mai stato utilizzato.");
-                table.setItems(FXCollections.observableArrayList()); // Pulisce la tabella
+                table.setItems(FXCollections.observableArrayList());
             } else {
                 response.setText("");
                 List<List<String>> data = new ArrayList<>();
     
                 for (String veicoloData : lista) {
-                    // Divide la stringa usando il delimitatore specifico (esempio: virgola)
                     String[] values = veicoloData.split(","); 
                     if (values.length == 4) { 
                         data.add(Arrays.asList(values));
@@ -434,9 +407,6 @@ public class VehicleScene {
                 table.setItems(FXCollections.observableArrayList(data));
             }
         });
-    
         mainLayout.setCenter(vbox);
     }
-    
-    
 }   

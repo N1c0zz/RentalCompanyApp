@@ -31,7 +31,7 @@ public class SanctionScene {
         sideMenu.setPadding(new Insets(10));
         Button operazione1Button = new Button("Emettere una nuova sanzione");
 
-        operazione1Button.setOnAction(e -> sanctionOperazione1(mainLayout));
+        operazione1Button.setOnAction(e -> emettiSanzione(mainLayout));
 
         sideMenu.getChildren().addAll(operazione1Button);
 
@@ -44,7 +44,7 @@ public class SanctionScene {
         return new Scene(mainLayout, 800, 600);
     }
 
-    private void sanctionOperazione1(BorderPane mainLayout) {
+    private void emettiSanzione(BorderPane mainLayout) {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
         vbox.getChildren().add(new Label("Emettere una nuova sanzione"));
@@ -68,7 +68,6 @@ public class SanctionScene {
         vbox.getChildren().addAll(codPrenotazione, motivazione, costoApplicato, generaSanzione, response);
     
         generaSanzione.setOnAction(e -> {
-            // Controllo sul codice della prenotazione
             String codPrenotazioneStr = codPrenotazione.getText().trim();
             if (codPrenotazioneStr.isEmpty()) {
                 response.setText("Errore: Il codice della prenotazione non può essere vuoto.");
@@ -83,14 +82,12 @@ public class SanctionScene {
                 return;
             }
     
-            // Controllo sulla motivazione
             String motivazioneStr = motivazione.getText().trim();
             if (motivazioneStr.isEmpty()) {
                 response.setText("Errore: La motivazione della sanzione non può essere vuota.");
                 return;
             }
     
-            // Controllo sul costo applicato
             String costoApplicatoStr = costoApplicato.getText().trim();
             float costo;
             try {
@@ -104,12 +101,10 @@ public class SanctionScene {
                 return;
             }
     
-            // Se tutti i controlli sono passati, emetti la sanzione
-            String risultato = sanzione.emissioneSanzione(codicePrenotazione, motivazioneStr, costo);
+            String risultato = sanzione.emettiSanzione(codicePrenotazione, motivazioneStr, costo);
             response.setText(risultato);
         });
     
         mainLayout.setCenter(vbox);
     }
-    
 }

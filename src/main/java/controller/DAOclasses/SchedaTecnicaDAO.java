@@ -15,13 +15,12 @@ public class SchedaTecnicaDAO {
     public SchedaTecnicaDAO() {
 
     }
-
     /**
      * OP3 - VISUALIZZARE LA SCHEDA TECNICA DI UN VEICOLO
      * 
      * @param idVeicolo
      */
-    public SchedaTecnica getSchedaTecnica(int idVeicolo) {
+    public SchedaTecnica ottieniSchedaTecnica(int idVeicolo) {
         String query = "SELECT * FROM schedeTecniche WHERE numeroScheda = (SELECT schedaTecnica" +
                         " FROM veicoli WHERE idVeicolo = ?)";
 
@@ -50,5 +49,4 @@ public class SchedaTecnicaDAO {
                 return new SchedaTecnica();
             }
     }
-    
 }

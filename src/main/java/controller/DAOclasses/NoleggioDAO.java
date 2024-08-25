@@ -13,9 +13,8 @@ public class NoleggioDAO {
     public NoleggioDAO (DataBaseHandler dbHandler) {
         this.dbHandler = dbHandler;
     }
-
     /**
-     * OP9 - ATTIVARE UN NOLEGGIO
+     * OP10 - ATTIVARE UN NOLEGGIO
      * Attiva un noleggio relativo ad una determinata
      * prenotazione andando a prendere da Utilizzi il veicolo
      * da noleggiare, da Veicoli il relativo costo e da Prenotazioni
@@ -24,7 +23,7 @@ public class NoleggioDAO {
      * 
      * @param noleggio
      */
-    public String attivazioneNoleggio(int codPrenotazione) {
+    public String attivaNoleggio(int codPrenotazione) {
         String query = "INSERT INTO noleggi (codPrenotazione, idVeicolo, costo)" +
                         "SELECT u.codPrenotazione, u.idVeicolo, (DATEDIFF(p.dataFine, p.dataInizio) + 1) * v.costoPerGiornata AS costo" +
                         "FROM utilizzi u JOIN prenotazioni p ON u.idPrenotazione = p.codPrenotazione" +
@@ -48,7 +47,7 @@ public class NoleggioDAO {
     }
 
     /**
-     * OP10 - TERMINARE UN NOLEGGIO
+     * OP11 - TERMINARE UN NOLEGGIO
      * Aggiorno inizialmente le tabelle Prenotazioni e Clienti
      * assegnando la prenotazione relativa come conclusa, e 
      * incrementando il numero di noleggi conclusi dal relativo

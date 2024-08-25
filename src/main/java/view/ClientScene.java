@@ -36,40 +36,34 @@ public class ClientScene {
     public Scene createClientScene() {
         BorderPane mainLayout = new BorderPane();
 
-        // Menu superiore
         HBox topMenu = new TopMenu(app).createTopMenu(mainLayout);
 
-        // Menu laterale per le sotto-operazioni
         VBox sideMenu = new VBox(10);
         sideMenu.setPadding(new Insets(10));
         Button operazione1Button = new Button("Registrare un nuovo cliente");
         Button operazione2Button = new Button("Visualizza lo storico noleggi di un cliente");
         Button operazione3Button = new Button("Visualizza i 10 migliori clienti");
 
-        // Imposta le azioni per i bottoni
-        operazione1Button.setOnAction(e -> clientOperazione1(mainLayout));
-        operazione2Button.setOnAction(e -> clientOperazione2(mainLayout));
-        operazione3Button.setOnAction(e -> clientOperazione3(mainLayout));
+        operazione1Button.setOnAction(e -> registraCliente(mainLayout));
+        operazione2Button.setOnAction(e -> visualizzaStoricoNoleggi(mainLayout));
+        operazione3Button.setOnAction(e -> miglioriClienti(mainLayout));
 
         sideMenu.getChildren().addAll(operazione1Button, operazione2Button, operazione3Button);
 
         mainLayout.setTop(topMenu);
         mainLayout.setLeft(sideMenu);
 
-        // Contenuto principale iniziale
         Label homeLabel = new Label("Sezione Clienti");
         mainLayout.setCenter(homeLabel);
 
         return new Scene(mainLayout, 800, 600);
     }
 
-    // Metodo per mostrare la vista dell'operazione 1
-    private void clientOperazione1(BorderPane mainLayout) {
+    private void registraCliente(BorderPane mainLayout) {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
         vbox.getChildren().add(new Label("Registra qui un nuovo cliente"));
         
-        // Creazione dei campi di testo
         TextField codiceFiscale = new TextField();
         codiceFiscale.setPromptText("Inserisci il codice fiscale");
         TextField nome = new TextField();
@@ -113,7 +107,6 @@ public class ClientScene {
         aggiungiCliente.setOnAction(e -> {
             StringBuilder errors = new StringBuilder();
     
-            // Validazione campi obbligatori
             if (codiceFiscale.getText().isEmpty()) {
                 errors.append("Codice fiscale è obbligatorio.\n");
             }
@@ -154,7 +147,6 @@ public class ClientScene {
                 errors.append("CAP di fatturazione è obbligatorio.\n");
             }
     
-            // Validazione formati
             if (!indirizzo_numeroCivico.getText().matches("\\d+")) {
                 errors.append("Numero civico deve essere un numero.\n");
             }
@@ -179,14 +171,13 @@ public class ClientScene {
                 return;
             }
     
-            // Se tutto è valido, si procede con l'aggiunta del cliente
-            String temp1 = persona.addPerson(
+            String temp1 = persona.aggiungiPersona(
                     codiceFiscale.getText(), nome.getText(), cognome.getText(),
                     indirizzo_via.getText(), Integer.parseInt(indirizzo_numeroCivico.getText()),
                     indirizzo_città.getText(), indirizzo_CAP.getText(),
                     numeroDiTelefono.getText(), indirizzoEmail.getText());
     
-            String temp2 = cliente.addClient(
+            String temp2 = cliente.aggiungiCliente(
                     codiceFiscale.getText(), numeroPatente.getText(),
                     fatturazione_via.getText(), Integer.parseInt(fatturazione_numeroCivico.getText()),
                     fatturazione_città.getText(), fatturazione_CAP.getText());
@@ -200,9 +191,8 @@ public class ClientScene {
         mainLayout.setCenter(vbox);
     }    
 
-    // Metodo per mostrare la vista dell'operazione 2
     @SuppressWarnings("unchecked")
-    private void clientOperazione2(BorderPane mainLayout) {
+    private void visualizzaStoricoNoleggi(BorderPane mainLayout) {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
         vbox.getChildren().add(new Label("Visualizza lo storico dei noleggi di un cliente"));
@@ -214,8 +204,7 @@ public class ClientScene {
         TextField response = new TextField();
         response.setPromptText("Response");
         response.setEditable(false);
-    
-        // TableView per visualizzare lo storico dei noleggi
+
         TableView<List<String>> table = new TableView<>();
     
         TableColumn<List<String>, String> codNoleggio = new TableColumn<>("Codice Noleggio");
@@ -246,7 +235,6 @@ public class ClientScene {
         visualizzaStorico.setOnAction(e -> {
             String codiceFiscaleInput = codiceFiscale.getText().trim();
             
-            // Controllo sul codice fiscale
             if (!isValidCodiceFiscale(codiceFiscaleInput)) {
                 response.setText("Codice fiscale non valido. Deve essere di 16 caratteri alfanumerici.");
                 return;
@@ -255,14 +243,11 @@ public class ClientScene {
             List<String> flatList = cliente.storicoNoleggi(codiceFiscaleInput);
             List<List<String>> lista = new ArrayList<>();
     
-            // Raggruppa i dati usando il delimitatore ","
             for (String record : flatList) {
-                // Divide ogni record in base al delimitatore
                 String[] values = record.split(",");
-                if (values.length == 7) { // Assicurati che ci siano esattamente 7 colonne
+                if (values.length == 7) {
                     lista.add(Arrays.asList(values));
                 } else {
-                    // Gestisci il caso in cui i dati non siano nel formato previsto
                     response.setText("Formato dei dati non valido: " + Arrays.toString(values));
                     return;
                 }
@@ -280,54 +265,43 @@ public class ClientScene {
         mainLayout.setCenter(vbox);
     }
     
-    // Metodo per validare il codice fiscale
     private boolean isValidCodiceFiscale(String codiceFiscale) {
         return codiceFiscale.length() == 16 && codiceFiscale.matches("[A-Za-z0-9]+");
     }
     
+    private void miglioriClienti(BorderPane mainLayout) {
 
-
-    // Metodo per mostrare la vista dell'operazione 3
-    private void clientOperazione3(BorderPane mainLayout) {
-        // Configurazione della VBox come layout principale della vista
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
         vbox.getChildren().add(new Label("Visualizza i 10 clienti con più noleggi"));
 
-        // Creazione del TextField per mostrare eventuali messaggi di risposta
         TextField response = new TextField();
         response.setPromptText("Response");
         response.setEditable(false);
 
         Button visualizzaClienti = new Button("Visualizza migliori clienti");
 
-        // Creazione della TableView per mostrare i Codici Fiscali dei clienti
         TableView<String> table = new TableView<>();
         TableColumn<String, String> CFcliente = new TableColumn<>("Codice Fiscale Cliente");
 
-        // Configurazione del CellValueFactory per mostrare i dati correttamente
         CFcliente.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
 
-        // Aggiunta della colonna alla TableView
         table.getColumns().add(CFcliente);
     
-        // Aggiunta dei componenti alla VBox
         vbox.getChildren().addAll(visualizzaClienti, table, response);
 
-        // Configurazione dell'azione del pulsante
         visualizzaClienti.setOnAction(e -> {
-            List<String> lista = cliente.classificaClienti(); // Recupero della lista di clienti
+            List<String> lista = cliente.classificaClienti();
             if (lista.isEmpty()) {
                 response.setText("Nessun cliente trovato.");
-                table.setItems(FXCollections.observableArrayList()); // Pulisci la tabella
+                table.setItems(FXCollections.observableArrayList());
             } else {
                 response.setText("");
                 ObservableList<String> data = FXCollections.observableArrayList(lista);
-                table.setItems(data); // Popola la tabella con i dati
+                table.setItems(data);
             }
         });
 
-        // Imposta la VBox come contenuto principale del layout
         mainLayout.setCenter(vbox);
     }
 }
