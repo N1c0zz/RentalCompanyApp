@@ -55,46 +55,86 @@ public class RentScene {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
         vbox.getChildren().add(new Label("Attiva un nuovo noleggio per una prenotazione"));
+    
         TextField codPrenotazione = new TextField();
         codPrenotazione.setPromptText("Inserisci il codice della prenotazione");
+    
         Button attivaNoleggio = new Button("Attiva noleggio");
+    
         TextField response = new TextField();
         response.setPromptText("Response");
         response.setEditable(false);
         response.setMinSize(200, 200);
-
+    
         vbox.getChildren().addAll(codPrenotazione, attivaNoleggio, response);
-
+    
         attivaNoleggio.setOnAction(e -> {
-            String temp1 = noleggio.attivazioneNoleggio(Integer.parseInt(codPrenotazione.getText()));
-
-            response.setText(temp1);
+            String codicePrenotazioneInput = codPrenotazione.getText().trim();
+    
+            // Controllo sul codice della prenotazione
+            if (codicePrenotazioneInput.isEmpty()) {
+                response.setText("Errore: Il codice della prenotazione non può essere vuoto.");
+                return;
+            }
+    
+            int codicePrenotazione;
+            try {
+                codicePrenotazione = Integer.parseInt(codicePrenotazioneInput);
+            } catch (NumberFormatException ex) {
+                response.setText("Errore: Il codice della prenotazione deve essere un numero intero valido.");
+                return;
+            }
+    
+            // Se tutti i controlli sono passati, attiva il noleggio
+            String risultato = noleggio.attivazioneNoleggio(codicePrenotazione);
+            response.setText(risultato);
         });
-
+    
         mainLayout.setCenter(vbox);
     }
+    
 
     // Metodo per mostrare la vista dell'operazione 2
     private void rentOperazione2(BorderPane mainLayout) {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
         vbox.getChildren().add(new Label("Termina un noleggio"));
+    
         TextField codNoleggio = new TextField();
         codNoleggio.setPromptText("Inserisci il codice del noleggio da terminare");
+    
         Button terminaNoleggio = new Button("Termina noleggio");
+    
         TextField response = new TextField();
         response.setPromptText("Response");
         response.setEditable(false);
         response.setMinSize(200, 200);
-
+    
         vbox.getChildren().addAll(codNoleggio, terminaNoleggio, response);
-
+    
         terminaNoleggio.setOnAction(e -> {
-            String temp1 = noleggio.terminaNoleggio(Integer.parseInt(codNoleggio.getText()));
-
-            response.setText(temp1);
+            String codiceNoleggioInput = codNoleggio.getText().trim();
+    
+            // Controllo sul codice di noleggio
+            if (codiceNoleggioInput.isEmpty()) {
+                response.setText("Errore: Il codice del noleggio non può essere vuoto.");
+                return;
+            }
+    
+            int codiceNoleggio;
+            try {
+                codiceNoleggio = Integer.parseInt(codiceNoleggioInput);
+            } catch (NumberFormatException ex) {
+                response.setText("Errore: Il codice del noleggio deve essere un numero intero valido.");
+                return;
+            }
+    
+            // Se tutti i controlli sono passati, termina il noleggio
+            String risultato = noleggio.terminaNoleggio(codiceNoleggio);
+            response.setText(risultato);
         });
-
+    
         mainLayout.setCenter(vbox);
     }
+    
 }

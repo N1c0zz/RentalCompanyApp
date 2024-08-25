@@ -44,28 +44,72 @@ public class SanctionScene {
         return new Scene(mainLayout, 800, 600);
     }
 
-    private void sanctionOperazione1 (BorderPane mainLayout) {
+    private void sanctionOperazione1(BorderPane mainLayout) {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
         vbox.getChildren().add(new Label("Emettere una nuova sanzione"));
+    
         TextField codPrenotazione = new TextField();
         codPrenotazione.setPromptText("Inserisci il codice della prenotazione associata");
+    
         TextField motivazione = new TextField();
         motivazione.setPromptText("Inserisci la motivazione della sanzione");
+    
         TextField costoApplicato = new TextField();
         costoApplicato.setPromptText("Inserisci il costo aggiuntivo per la sanzione");
+    
         Button generaSanzione = new Button("Genera sanzione");
+    
         TextField response = new TextField();
         response.setPromptText("Response");
         response.setEditable(false);
         response.setMinSize(200, 200);
-
-        vbox.getChildren().addAll(codPrenotazione, motivazione, costoApplicato,
-                                    generaSanzione, response);
+    
+        vbox.getChildren().addAll(codPrenotazione, motivazione, costoApplicato, generaSanzione, response);
+    
         generaSanzione.setOnAction(e -> {
-            response.setText(sanzione.emissioneSanzione(Integer.parseInt(codPrenotazione.getText()),
-                            motivazione.getText(), Float.parseFloat(costoApplicato.getText())));
-        });      
+            // Controllo sul codice della prenotazione
+            String codPrenotazioneStr = codPrenotazione.getText().trim();
+            if (codPrenotazioneStr.isEmpty()) {
+                response.setText("Errore: Il codice della prenotazione non può essere vuoto.");
+                return;
+            }
+            
+            int codicePrenotazione;
+            try {
+                codicePrenotazione = Integer.parseInt(codPrenotazioneStr);
+            } catch (NumberFormatException ex) {
+                response.setText("Errore: Il codice della prenotazione deve essere un numero intero valido.");
+                return;
+            }
+    
+            // Controllo sulla motivazione
+            String motivazioneStr = motivazione.getText().trim();
+            if (motivazioneStr.isEmpty()) {
+                response.setText("Errore: La motivazione della sanzione non può essere vuota.");
+                return;
+            }
+    
+            // Controllo sul costo applicato
+            String costoApplicatoStr = costoApplicato.getText().trim();
+            float costo;
+            try {
+                costo = Float.parseFloat(costoApplicatoStr);
+                if (costo <= 0) {
+                    response.setText("Errore: Il costo della sanzione deve essere un valore positivo.");
+                    return;
+                }
+            } catch (NumberFormatException ex) {
+                response.setText("Errore: Il costo della sanzione deve essere un numero valido.");
+                return;
+            }
+    
+            // Se tutti i controlli sono passati, emetti la sanzione
+            String risultato = sanzione.emissioneSanzione(codicePrenotazione, motivazioneStr, costo);
+            response.setText(risultato);
+        });
+    
         mainLayout.setCenter(vbox);
     }
+    
 }

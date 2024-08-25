@@ -39,7 +39,7 @@ public class InvoiceScene {
         // Menu laterale per le sotto-operazioni
         VBox sideMenu = new VBox(10);
         sideMenu.setPadding(new Insets(10));
-        Button operazione1Button = new Button("Emttere una nuova fattura");
+        Button operazione1Button = new Button("Emettere una nuova fattura");
         Button operazione2Button = new Button("Visualizza il fatturato mensile");
 
         // Imposta le azioni per i bottoni
@@ -63,24 +63,54 @@ public class InvoiceScene {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
         vbox.getChildren().add(new Label("Compila una nuova fattura per una prenotazione"));
+    
         TextField codPrenotazione = new TextField();
         codPrenotazione.setPromptText("Inserisci il codice della prenotazione associata");
+    
         TextField metodoDiPagamento = new TextField();
         metodoDiPagamento.setPromptText("Inserisci il metodo di pagamento utilizzato");
+    
         Button emettiFattura = new Button("Emetti fattura");
+    
         TextField response = new TextField();
         response.setPromptText("Response");
         response.setEditable(false);
         response.setMinSize(200, 200);
-
+    
         vbox.getChildren().addAll(codPrenotazione, metodoDiPagamento, emettiFattura, response);
+    
         emettiFattura.setOnAction(e -> {
-            response.setText(fattura.emettiFattura(metodoDiPagamento.getText(), 
-                            Integer.parseInt(codPrenotazione.getText())));
+            String codicePrenotazioneInput = codPrenotazione.getText().trim();
+            String metodoDiPagamentoInput = metodoDiPagamento.getText().trim();
+    
+            // Controllo sul codice della prenotazione
+            if (codicePrenotazioneInput.isEmpty()) {
+                response.setText("Errore: Il codice della prenotazione non può essere vuoto.");
+                return;
+            }
+    
+            int codicePrenotazione;
+            try {
+                codicePrenotazione = Integer.parseInt(codicePrenotazioneInput);
+            } catch (NumberFormatException ex) {
+                response.setText("Errore: Il codice della prenotazione deve essere un numero intero valido.");
+                return;
+            }
+    
+            // Controllo sul metodo di pagamento
+            if (metodoDiPagamentoInput.isEmpty()) {
+                response.setText("Errore: Il metodo di pagamento non può essere vuoto.");
+                return;
+            }
+    
+            // Se tutti i controlli sono passati, emetti la fattura
+            String risultato = fattura.emettiFattura(metodoDiPagamentoInput, codicePrenotazione);
+            response.setText(risultato);
         });
-        
+    
         mainLayout.setCenter(vbox);
     }
+    
 
     // Metodo per mostrare la vista dell'operazione 2
     @SuppressWarnings("unchecked")
