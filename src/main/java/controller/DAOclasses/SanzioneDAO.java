@@ -22,32 +22,25 @@ public class SanzioneDAO {
      */
     public String emettiSanzione(int codPrenotazione, String motivazione, float costoApplicato) {
 
-        String query1 = "INSERT INTO sanzioni (motivazione, costoApplicato) VALUES (?, ?)";
-
-        String query2 = "INSERT INTO inclusioni (fattura, codSanzione) VALUES ((SELECT fattura" +
-                        " FROM prenotazioni WHERE codPrenotazione = ?), LAST_INSERT_ID())";
-        
-        String query3 = "UPDATE fatture SET importoTotale = importoTotale + (SELECT SUM(s.costoApplicato)" +
+        String query = "INSERT INTO sanzioni (motivazione, costoApplicato) VALUES (?, ?);" +
+                        "INSERT INTO inclusioni (fattura, codSanzione) VALUES ((SELECT numeroFattura" +
+                        " FROM fatture WHERE prenotazione = ?), LAST_INSERT_ID());" +
+                        "UPDATE fatture SET importoTotale = importoTotale + (SELECT SUM(s.costoApplicato)" +
                         " FROM inclusioni i JOIN sanzioni s ON i.codSanzione = s.codSanzione WHERE i.fattura" +
-                        " = (SELECT fattura FROM prenotazioni WHERE codPrenotazione = ?))" +
-                        " WHERE numeroFattura = (SELECT fattura FROM prenotazioni WHERE codPrenotazione = ?)";
+                        " = (SELECT fattura FROM inclusioni WHERE codSanzione = LAST_INSERT_ID()))" +
+                        " WHERE prenotazione = ?";
 
         try (Connection conn = dbHandler.setSQLDataSource().getConnection();
-             PreparedStatement pstmt1 = conn.prepareStatement(query1);
-             PreparedStatement pstmt2 = conn.prepareStatement(query2);
-             PreparedStatement pstmt3 = conn.prepareStatement(query3);) {
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
 
-                pstmt1.setString(1, motivazione);
-                pstmt1.setFloat(2, costoApplicato);
-                pstmt2.setInt(1, codPrenotazione);
-                pstmt3.setInt(1, codPrenotazione);
-                pstmt3.setInt(2, codPrenotazione);
+                pstmt.setString(1, motivazione);
+                pstmt.setFloat(2, costoApplicato);
+                pstmt.setInt(3, codPrenotazione);
+                pstmt.setInt(4, codPrenotazione);
 
-                int affRows1 = pstmt1.executeUpdate();
-                int affRows2 = pstmt2.executeUpdate();
-                int affRows3 = pstmt3.executeUpdate();
+                int affRows = pstmt.executeUpdate();
 
-                if(affRows1 > 0 && affRows2 > 0 && affRows3 > 0){
+                if(affRows > 0){
                     return "Sanzione generata correttamente";
                 } else {
                     return "Generazione non riuscita. Riprovare";

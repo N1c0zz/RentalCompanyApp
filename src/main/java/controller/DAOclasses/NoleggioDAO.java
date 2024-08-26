@@ -56,29 +56,23 @@ public class NoleggioDAO {
      * @param noleggio
      */
     public String terminaNoleggio(int codNoleggioDaModificare) {
-        String query1 = "UPDATE prenotazioni AS p" +
+        String query = "UPDATE prenotazioni AS p" +
                         " JOIN clienti AS c ON c.CFCliente = p.cliente" +
                         " JOIN noleggi AS v ON v.codPrenotazione = p.codPrenotazione" +
                         " SET p.statoPrenotazione = \"Conclusa\", c.numeroNoleggiConclusi = c.numeroNoleggiConclusi + p.numeroNoleggiRichiesti" +
-                        " WHERE v.codNoleggio = ?";
-
-        String query2 = "DELETE FROM utilizzi WHERE idPrenotazione = (SELECT codPrenotazione FROM noleggi WHERE codNoleggio = ?)";
-
-        String query3 = "DELETE FROM noleggi WHERE codNoleggio = ?";
+                        " WHERE v.codNoleggio = ?; " +
+                        "DELETE FROM utilizzi WHERE idPrenotazione = (SELECT codPrenotazione FROM noleggi WHERE codNoleggio = ?); " +
+                        "DELETE FROM noleggi WHERE codNoleggio = ?";
 
         try (Connection conn = dbHandler.setSQLDataSource().getConnection();
-             PreparedStatement pstmt1 = conn.prepareStatement(query1);
-             PreparedStatement pstmt2 = conn.prepareStatement(query2);
-             PreparedStatement pstmt3 = conn.prepareStatement(query3)) {
-                pstmt1.setInt(1, codNoleggioDaModificare);
-                pstmt2.setInt(1, codNoleggioDaModificare);
-                pstmt3.setInt(1, codNoleggioDaModificare);
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setInt(1, codNoleggioDaModificare);
+                pstmt.setInt(2, codNoleggioDaModificare);
+                pstmt.setInt(3, codNoleggioDaModificare);
 
-                int affRows1 = pstmt1.executeUpdate();
-                int affRows2 = pstmt2.executeUpdate();
-                int affRows3 = pstmt3.executeUpdate();
+                int affRows = pstmt.executeUpdate();
 
-                if(affRows1 > 0 && affRows2 > 0 && affRows3 > 0)
+                if(affRows > 0)
                     return "Noleggio terminato correttamente";
                 else
                     return "Terminazione noleggio non riuscita. Riprovare";

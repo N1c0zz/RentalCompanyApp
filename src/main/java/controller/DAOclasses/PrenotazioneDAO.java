@@ -22,20 +22,17 @@ public class PrenotazioneDAO {
      */
     public String registraPrenotazione(String CF, String dataInizio, String dataFine, int idVeicolo) {
 
-        String query1 = "INSERT INTO prenotazioni (cliente, dataInizio, dataFine) VALUES (?, ?, ?)";
-
-        String query2 = "INSERT INTO utilizzi (idPrenotazione, numVeicolo) VALUES (LAST_INSERT_ID(), ?)"; 
+        String query = "INSERT INTO prenotazioni (cliente, dataInizio, dataFine) VALUES (?, ?, ?); " +
+                        "INSERT INTO utilizzi (idPrenotazione, numVeicolo) VALUES (LAST_INSERT_ID(), ?)"; 
                        
         try (Connection conn = dbHandler.setSQLDataSource().getConnection();
-             PreparedStatement pstmt1 = conn.prepareStatement(query1);
-             PreparedStatement pstmt2 = conn.prepareStatement(query2)) {
-                pstmt1.setString(1, CF);
-                pstmt1.setString(2, dataInizio);
-                pstmt1.setString(3, dataInizio);
-                pstmt2.setInt(1, idVeicolo);
-                int affRows1 = pstmt1.executeUpdate();
-                int affRows2 = pstmt2.executeUpdate();
-                if(affRows1 > 0 && affRows2 > 0){
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setString(1, CF);
+                pstmt.setString(2, dataInizio);
+                pstmt.setString(3, dataInizio);
+                pstmt.setInt(4, idVeicolo);
+                int affRows = pstmt.executeUpdate();
+                if(affRows > 0){
                     return "Prenotazione registrata correttamente";
                 }else{
                     return "Registrazione non riuscita. Riprovare.";
@@ -53,21 +50,17 @@ public class PrenotazioneDAO {
      */
     public String registraDoppiaPrenotazione(String CF, String dataInizio, String dataFine, int idVeicolo) {
 
-        String query1 = "INSERT INTO prenotazioni (cliente, dataInizio, dataFine, numeroNoleggiRichiesti) VALUES (?, ?, ?, ?)";
-
-        String query2 = "INSERT INTO utilizzi (idPrenotazione, numVeicolo) VALUES (LAST_INSERT_ID(), ?)";
-
+        String query = "INSERT INTO prenotazioni (cliente, dataInizio, dataFine, numeroNoleggiRichiesti) VALUES (?, ?, ?, 2); " +
+                        "INSERT INTO utilizzi (idPrenotazione, numVeicolo) VALUES (LAST_INSERT_ID(), ?)"; 
+                       
         try (Connection conn = dbHandler.setSQLDataSource().getConnection();
-             PreparedStatement pstmt1 = conn.prepareStatement(query1);
-             PreparedStatement pstmt2 = conn.prepareStatement(query2)) {
-                pstmt1.setString(1, CF);
-                pstmt1.setString(2, dataInizio);
-                pstmt1.setString(3, dataInizio);
-                pstmt1.setInt(4, 2);
-                pstmt2.setInt(1, idVeicolo);
-                int affRows1 = pstmt1.executeUpdate();
-                int affRows2 = pstmt2.executeUpdate();
-                if(affRows1 > 0 && affRows2 > 0){
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setString(1, CF);
+                pstmt.setString(2, dataInizio);
+                pstmt.setString(3, dataInizio);
+                pstmt.setInt(4, idVeicolo);
+                int affRows = pstmt.executeUpdate();
+                if(affRows > 0){
                     return "Prenotazione registrata correttamente";
                 }else{
                     return "Registrazione non riuscita. Riprovare.";
@@ -84,21 +77,19 @@ public class PrenotazioneDAO {
      * @param prenotazione
      */
     public String modificaPrenotazione(String dataInizio, String dataFine, int codPrenotazione, int idVeicolo) {
-        String query1 = "UPDATE prenotazioni SET dataInizio = ?, dataFine = ? WHERE codPrenotazione = ?";
 
-        String query2 = "UPDATE utilizzo SET numVeicolo = ? WHERE idPrenotazione = ?";
+        String query = "UPDATE prenotazioni SET dataInizio = ?, dataFine = ? WHERE codPrenotazione = ?; " +
+                        "UPDATE utilizzo SET numVeicolo = ? WHERE idPrenotazione = ?";
 
         try (Connection conn = dbHandler.setSQLDataSource().getConnection();
-             PreparedStatement pstmt1 = conn.prepareStatement(query1);
-             PreparedStatement pstmt2 = conn.prepareStatement(query2)) {
-                pstmt1.setString(1, dataInizio);
-                pstmt1.setString(2, dataFine);
-                pstmt1.setInt(3, codPrenotazione);
-                pstmt2.setInt(1, idVeicolo);
-                pstmt2.setInt(2, codPrenotazione);
-                int affRows1 = pstmt1.executeUpdate();
-                int affRows2 = pstmt2.executeUpdate();
-                if(affRows1 > 0 && affRows2 > 0){
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setString(1, dataInizio);
+                pstmt.setString(2, dataFine);
+                pstmt.setInt(3, codPrenotazione);
+                pstmt.setInt(4, idVeicolo);
+                pstmt.setInt(5, codPrenotazione);
+                int affRows = pstmt.executeUpdate();
+                if(affRows > 0){
                     return "Prenotazione registrata correttamente";
                 }else{
                     return "Registrazione non riuscita. Riprovare.";
@@ -116,18 +107,16 @@ public class PrenotazioneDAO {
      * @param prenotazione
      */
     public String eliminaPrenotazione(int codPrenotazione) {
-        String query1 = "DELETE FROM prenotazioni WHERE codPrenotazione = ?"; 
 
-        String query2 = "DELETE FROM utilizzo WHERE idPrenotazione = ?";
+        String query = "DELETE FROM prenotazioni WHERE codPrenotazione = ?; " + 
+                        "DELETE FROM utilizzo WHERE idPrenotazione = ?";
 
         try (Connection conn = dbHandler.setSQLDataSource().getConnection();
-             PreparedStatement pstmt1 = conn.prepareStatement(query1);
-             PreparedStatement pstmt2 = conn.prepareStatement(query2)) {
-                pstmt1.setInt(1, codPrenotazione);
-                pstmt2.setInt(1, codPrenotazione);
-                int affRows1 = pstmt1.executeUpdate();
-                int affRows2 = pstmt2.executeUpdate();
-                if(affRows1 > 0 && affRows2 > 0){
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setInt(1, codPrenotazione);
+                pstmt.setInt(2, codPrenotazione);
+                int affRows = pstmt.executeUpdate();
+                if(affRows > 0){
                     return "Prenotazione registrata correttamente";
                 }else{
                     return "Registrazione non riuscita. Riprovare.";
@@ -136,5 +125,4 @@ public class PrenotazioneDAO {
                 return e.getMessage();
             }
     }
-    
 }
