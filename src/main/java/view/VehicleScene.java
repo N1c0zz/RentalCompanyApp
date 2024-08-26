@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -49,11 +50,26 @@ public class VehicleScene {
         Button operazione4Button = new Button("Veicoli più noleggiati");
         Button operazione5Button = new Button("Tasso di utilizzo di un veicolo");
 
-        operazione1Button.setOnAction(e -> registraVeicolo(mainLayout));
-        operazione2Button.setOnAction(e -> disponibilitaVeicolo(mainLayout));
-        operazione3Button.setOnAction(e -> schedaTecnicaVeicolo(mainLayout));
-        operazione4Button.setOnAction(e -> veicoliPiuNoleggiati(mainLayout));
-        operazione5Button.setOnAction(e -> tassoUtilizzoVeicolo(mainLayout));
+        operazione1Button.setOnAction(e -> {
+            registraVeicolo(mainLayout);
+            app.getPrimaryStage().setFullScreen(true);
+            app.getPrimaryStage().setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));});
+        operazione2Button.setOnAction(e -> {
+            disponibilitaVeicolo(mainLayout);
+            app.getPrimaryStage().setFullScreen(true);
+            app.getPrimaryStage().setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));});
+        operazione3Button.setOnAction(e -> {
+            schedaTecnicaVeicolo(mainLayout);
+            app.getPrimaryStage().setFullScreen(true);
+            app.getPrimaryStage().setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));});
+        operazione4Button.setOnAction(e -> {
+            veicoliPiuNoleggiati(mainLayout);
+            app.getPrimaryStage().setFullScreen(true);
+            app.getPrimaryStage().setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));});
+        operazione5Button.setOnAction(e -> {
+            tassoUtilizzoVeicolo(mainLayout);
+            app.getPrimaryStage().setFullScreen(true);
+            app.getPrimaryStage().setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));});
 
         sideMenu.getChildren().addAll(operazione1Button, operazione2Button, operazione3Button, 
                                         operazione4Button, operazione5Button);

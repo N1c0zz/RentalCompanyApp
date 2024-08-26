@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -38,9 +39,18 @@ public class ReservationScene {
         Button operazione2Button = new Button("Modifica una prenotazione");
         Button operazione3Button = new Button("Cancella una prenotazione");
 
-        operazione1Button.setOnAction(e -> registraPrenotazione(mainLayout));
-        operazione2Button.setOnAction(e -> modificaPrenotazione(mainLayout));
-        operazione3Button.setOnAction(e -> cancellaPrenotazione(mainLayout));
+        operazione1Button.setOnAction(e -> {
+            registraPrenotazione(mainLayout);
+            app.getPrimaryStage().setFullScreen(true);
+            app.getPrimaryStage().setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));});
+        operazione2Button.setOnAction(e -> {
+            modificaPrenotazione(mainLayout);
+            app.getPrimaryStage().setFullScreen(true);
+            app.getPrimaryStage().setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));});
+        operazione3Button.setOnAction(e -> {
+            cancellaPrenotazione(mainLayout);
+            app.getPrimaryStage().setFullScreen(true);
+            app.getPrimaryStage().setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));});
 
         sideMenu.getChildren().addAll(operazione1Button, operazione2Button, operazione3Button);
 

@@ -12,8 +12,8 @@ public class RentalCompanyApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
-
-        // Imposta la scena iniziale
+        
+        primaryStage.setFullScreen(true);
         primaryStage.setScene(new StartScene(this).createStartScene());
         primaryStage.setTitle("Gestione Noleggio Auto");
         primaryStage.show();

@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -31,7 +32,10 @@ public class SanctionScene {
         sideMenu.setPadding(new Insets(10));
         Button operazione1Button = new Button("Emettere una nuova sanzione");
 
-        operazione1Button.setOnAction(e -> emettiSanzione(mainLayout));
+        operazione1Button.setOnAction(e -> {
+            emettiSanzione(mainLayout);
+            app.getPrimaryStage().setFullScreen(true);
+            app.getPrimaryStage().setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));});
 
         sideMenu.getChildren().addAll(operazione1Button);
 

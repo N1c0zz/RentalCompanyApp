@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -44,9 +45,18 @@ public class ClientScene {
         Button operazione2Button = new Button("Visualizza lo storico noleggi di un cliente");
         Button operazione3Button = new Button("Visualizza i 10 migliori clienti");
 
-        operazione1Button.setOnAction(e -> registraCliente(mainLayout));
-        operazione2Button.setOnAction(e -> visualizzaStoricoNoleggi(mainLayout));
-        operazione3Button.setOnAction(e -> miglioriClienti(mainLayout));
+        operazione1Button.setOnAction(e -> {
+            registraCliente(mainLayout);
+            app.getPrimaryStage().setFullScreen(true);
+            app.getPrimaryStage().setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));});
+        operazione2Button.setOnAction(e -> {
+            visualizzaStoricoNoleggi(mainLayout);
+            app.getPrimaryStage().setFullScreen(true);
+            app.getPrimaryStage().setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));});
+        operazione3Button.setOnAction(e -> {
+            miglioriClienti(mainLayout);
+            app.getPrimaryStage().setFullScreen(true);
+            app.getPrimaryStage().setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));});
 
         sideMenu.getChildren().addAll(operazione1Button, operazione2Button, operazione3Button);
 
@@ -97,7 +107,7 @@ public class ClientScene {
         TextField response = new TextField();
         response.setPromptText("Response");
         response.setEditable(false);
-        response.setMinSize(300, 300);
+        response.setMinSize(150, 150);
     
         vbox.getChildren().addAll(codiceFiscale, nome, cognome, indirizzo_via,
                 indirizzo_numeroCivico, indirizzo_città, indirizzo_CAP, numeroDiTelefono,

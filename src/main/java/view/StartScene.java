@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.VBox;
 import src.main.java.application.RentalCompanyApp;
 
@@ -36,6 +37,8 @@ public class StartScene {
             
             if (authenticate(username, password)) {
                 app.getPrimaryStage().setScene(new ClientScene(app).createClientScene());
+                app.getPrimaryStage().setFullScreen(true);
+                app.getPrimaryStage().setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));
             } else {
                 messageLabel.setText("Credenziali non valide. Riprova.");
             }
@@ -49,7 +52,7 @@ public class StartScene {
     }
 
     private boolean authenticate(String username, String password) {
-        return "1".equals(username) && "1".equals(password);
+        return "admin".equals(username) && "password".equals(password);
     }
 }
 
