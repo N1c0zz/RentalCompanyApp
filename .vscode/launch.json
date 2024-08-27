@@ -1,12 +1,13 @@
 {
     "version": "0.2.0",
     "configurations": [
-        {
-            "type": "java",
-            "name": "Launch JavaFX",
-            "request": "launch",
-            "mainClass": "src.main.java.application.RentalCompanyApp",
-            "vmArgs": "--module-path C:/Users/nicom/Documents/JavaFX_SDK/javafx-sdk-22.0.2/lib --add-modules javafx.controls,javafx.fxml"
-        }
+      {
+        "type": "java",
+        "name": "Debug JavaFX Application",
+        "request": "launch",
+        "mainClass": "src.main.java.application.RentalCompanyApp",
+        "vmArgs": "--module-path C:/Users/nicom/Documents/JavaFX_SDK/javafx-sdk-22.0.2/lib --add-modules javafx.controls,javafx.fxml -cp C:/Users/nicom/Documents/MySQL-Connector/mysql-connector-j-8.3.0.jar;bin",
+      }
     ]
-}
+  }
+  

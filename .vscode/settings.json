@@ -1,14 +1,14 @@
 {
     "java.project.referencedLibraries": [
         "C:/Users/nicom/Documents/MySQL-Connector/mysql-connector-j-8.3.0.jar",
-        "c:/Users/nicom/Documents/JavaFX_SDK/javafx-sdk-22.0.2/lib/javafx.base.jar",
-        "c:/Users/nicom/Documents/JavaFX_SDK/javafx-sdk-22.0.2/lib/javafx.controls.jar",
-        "c:/Users/nicom/Documents/JavaFX_SDK/javafx-sdk-22.0.2/lib/javafx.fxml.jar",
-        "c:/Users/nicom/Documents/JavaFX_SDK/javafx-sdk-22.0.2/lib/javafx.graphics.jar",
-        "c:/Users/nicom/Documents/JavaFX_SDK/javafx-sdk-22.0.2/lib/javafx.media.jar",
-        "c:/Users/nicom/Documents/JavaFX_SDK/javafx-sdk-22.0.2/lib/javafx.swing.jar",
-        "c:/Users/nicom/Documents/JavaFX_SDK/javafx-sdk-22.0.2/lib/javafx.web.jar",
-        "c:/Users/nicom/Documents/JavaFX_SDK/javafx-sdk-22.0.2/lib/javafx-swt.jar"
+        "C:/Users/nicom/Documents/JavaFX_SDK/javafx-sdk-22.0.2/lib/javafx.base.jar",
+        "C:/Users/nicom/Documents/JavaFX_SDK/javafx-sdk-22.0.2/lib/javafx.controls.jar",
+        "C:/Users/nicom/Documents/JavaFX_SDK/javafx-sdk-22.0.2/lib/javafx.fxml.jar",
+        "C:/Users/nicom/Documents/JavaFX_SDK/javafx-sdk-22.0.2/lib/javafx.graphics.jar",
+        "C:/Users/nicom/Documents/JavaFX_SDK/javafx-sdk-22.0.2/lib/javafx.media.jar",
+        "C:/Users/nicom/Documents/JavaFX_SDK/javafx-sdk-22.0.2/lib/javafx.swing.jar",
+        "C:/Users/nicom/Documents/JavaFX_SDK/javafx-sdk-22.0.2/lib/javafx.web.jar",
+        "C:/Users/nicom/Documents/JavaFX_SDK/javafx-sdk-22.0.2/lib/javafx-swt.jar"
     ],
 
     "java.project.sourcePaths": [

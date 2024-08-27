@@ -6,18 +6,20 @@
         "type": "shell",
         "command": "javac",
         "args": [
-          "--module-path",
-          "C:/Users/nicom/Documents/JavaFX_SDK/javafx-sdk-22.0.2/lib",
-          "--add-modules",
-          "javafx.controls,javafx.fxml",
-          "-d",
-          "bin",
-          "src/main/java/**/*.java"
+          "--module-path", "C:/Users/nicom/Documents/JavaFX_SDK/javafx-sdk-22.0.2/lib",
+          "--add-modules", "javafx.controls,javafx.fxml",
+          "-cp", "C:/Users/nicom/Documents/MySQL-Connector/mysql-connector-j-8.3.0.jar",
+          "-d","bin",
+          "src/main/java/application/*.java",
+          "src/main/java/application/controller/DAOclasses/*.java",
+          "src/main/java/application/controller/DBHandler/*.java",
+          "src/main/java/application/model/*.java",
+          "src/main/java/application/view/*.java",
         ],
         "group": {
           "kind": "build",
           "isDefault": true
-        }
+        },
       }
     ]
   }
