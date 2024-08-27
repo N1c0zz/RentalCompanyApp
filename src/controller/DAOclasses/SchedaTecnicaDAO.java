@@ -1,12 +1,12 @@
-package src.main.java.application.controller.DAOclasses;
+package src.controller.DAOclasses;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import src.main.java.application.controller.DBHandler.DataBaseHandler;
-import src.main.java.application.model.SchedaTecnica;
+import src.controller.DBHandler.DataBaseHandler;
+import src.model.SchedaTecnica;
 
 public class SchedaTecnicaDAO {
 

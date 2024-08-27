@@ -1,4 +1,4 @@
-package src.main.java.application.model;
+package src.model;
 
 public class Impiegato {
 

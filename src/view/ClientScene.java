@@ -1,4 +1,4 @@
-package src.main.java.application.view;
+package src.view;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,10 +19,10 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import src.main.java.application.RentalCompanyApp;
-import src.main.java.application.controller.DAOclasses.ClienteDAO;
-import src.main.java.application.controller.DAOclasses.PersonaDAO;
-import src.main.java.application.controller.DBHandler.DataBaseHandler;
+import src.RentalCompanyApp;
+import src.controller.DAOclasses.ClienteDAO;
+import src.controller.DAOclasses.PersonaDAO;
+import src.controller.DBHandler.DataBaseHandler;
 
 public class ClientScene {
 

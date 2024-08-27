@@ -1,4 +1,4 @@
-package src.main.java.application.view;
+package src.view;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -14,11 +14,11 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import src.main.java.application.RentalCompanyApp;
-import src.main.java.application.controller.DAOclasses.SchedaTecnicaDAO;
-import src.main.java.application.controller.DAOclasses.VeicoloDAO;
-import src.main.java.application.controller.DBHandler.DataBaseHandler;
-import src.main.java.application.model.SchedaTecnica;
+import src.RentalCompanyApp;
+import src.controller.DAOclasses.SchedaTecnicaDAO;
+import src.controller.DAOclasses.VeicoloDAO;
+import src.controller.DBHandler.DataBaseHandler;
+import src.model.SchedaTecnica;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;

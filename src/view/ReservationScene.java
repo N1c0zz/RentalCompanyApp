@@ -1,4 +1,4 @@
-package src.main.java.application.view;
+package src.view;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -14,9 +14,9 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import src.main.java.application.RentalCompanyApp;
-import src.main.java.application.controller.DAOclasses.PrenotazioneDAO;
-import src.main.java.application.controller.DBHandler.DataBaseHandler;
+import src.RentalCompanyApp;
+import src.controller.DAOclasses.PrenotazioneDAO;
+import src.controller.DBHandler.DataBaseHandler;
 
 public class ReservationScene {
 

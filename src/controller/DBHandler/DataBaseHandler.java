@@ -1,4 +1,4 @@
-package src.main.java.application.controller.DBHandler;
+package src.controller.DBHandler;
 
 import java.sql.SQLException;
 

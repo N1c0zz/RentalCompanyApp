@@ -1,4 +1,4 @@
-package src.main.java.application.view;
+package src.view;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -14,9 +14,9 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import src.main.java.application.RentalCompanyApp;
-import src.main.java.application.controller.DAOclasses.FatturaDAO;
-import src.main.java.application.controller.DBHandler.DataBaseHandler;
+import src.RentalCompanyApp;
+import src.controller.DAOclasses.FatturaDAO;
+import src.controller.DBHandler.DataBaseHandler;
 
 import java.util.*;
 

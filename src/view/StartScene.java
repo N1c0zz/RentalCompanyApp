@@ -1,4 +1,4 @@
-package src.main.java.application.view;
+package src.view;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -8,7 +8,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.VBox;
-import src.main.java.application.RentalCompanyApp;
+import src.RentalCompanyApp;
 
 public class StartScene {
     private final RentalCompanyApp app;

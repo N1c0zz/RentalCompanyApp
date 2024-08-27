@@ -1,4 +1,4 @@
-package src.main.java.application.controller.DAOclasses;
+package src.controller.DAOclasses;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList; 
 import java.util.List;
 
-import src.main.java.application.controller.DBHandler.DataBaseHandler;
+import src.controller.DBHandler.DataBaseHandler;
 
 public class VeicoloDAO {
 

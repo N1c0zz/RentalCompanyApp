@@ -1,4 +1,4 @@
-package src.main.java.application.view;
+package src.view;
 
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -9,9 +9,9 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import src.main.java.application.RentalCompanyApp;
-import src.main.java.application.controller.DAOclasses.SanzioneDAO;
-import src.main.java.application.controller.DBHandler.DataBaseHandler;
+import src.RentalCompanyApp;
+import src.controller.DAOclasses.SanzioneDAO;
+import src.controller.DBHandler.DataBaseHandler;
 
 public class SanctionScene {
 

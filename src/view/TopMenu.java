@@ -1,11 +1,11 @@
-package src.main.java.application.view;
+package src.view;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import src.main.java.application.RentalCompanyApp;
+import src.RentalCompanyApp;
 
 public class TopMenu {
 
