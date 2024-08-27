@@ -1,8 +1,8 @@
 package src.main.java.application;
 
-import javafx.application.Application;
+import javafx.application.*;
 import javafx.stage.Stage;
-import src.main.java.view.StartScene;
+import src.main.java.application.view.StartScene;
 
 
 public class RentalCompanyApp extends Application {
@@ -27,5 +27,4 @@ public class RentalCompanyApp extends Application {
 
         launch(args);
     }
-
 }
