@@ -39,7 +39,7 @@ public class SchedaTecnicaDAO {
                     schedaTecnica.setAnnoDiProduzione(rs.getInt("annoDiProduzione"));
                     schedaTecnica.setNumeroPosti(rs.getInt("numeroPosti"));
                     schedaTecnica.setNumeroPorte(rs.getInt("numeroPorte"));
-                    schedaTecnica.setCapacitàBagagliaio(rs.getFloat("capacitàBagagliaio"));
+                    schedaTecnica.setCapacitaBagagliaio(rs.getFloat("capacitaBagagliaio"));
                     return schedaTecnica;
                 }
 

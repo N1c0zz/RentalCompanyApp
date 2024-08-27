@@ -9,7 +9,7 @@ public class SchedaTecnica {
     private int annoDiProduzione;
     private int numeroPosti;
     private int numeroPorte;
-    private float capacitàBagagliaio;
+    private float capacitaBagagliaio;
     private String errorMessage;
 
     public SchedaTecnica() {
@@ -17,7 +17,7 @@ public class SchedaTecnica {
     }
     
     public SchedaTecnica(int numeroScheda, String tipoVeicolo, String casaProduttrice, String modello, int annoDiProduzione,
-                            int numeroPosti, int numeroPorte, float capacitàBagagliaio) {
+                            int numeroPosti, int numeroPorte, float capacitaBagagliaio) {
         this.numeroScheda = numeroScheda;
         this.tipoVeicolo = tipoVeicolo;
         this.casaProduttrice = casaProduttrice;
@@ -25,18 +25,18 @@ public class SchedaTecnica {
         this.annoDiProduzione = annoDiProduzione;
         this.numeroPosti = numeroPosti;
         this.numeroPorte = numeroPorte;
-        this.capacitàBagagliaio = capacitàBagagliaio;
+        this.capacitaBagagliaio = capacitaBagagliaio;
     }
 
     public SchedaTecnica(String tipoVeicolo, String casaProduttrice, String modello, int annoDiProduzione,
-                            int numeroPosti, int numeroPorte, float capacitàBagagliaio) {
+                            int numeroPosti, int numeroPorte, float capacitaBagagliaio) {
         this.tipoVeicolo = tipoVeicolo;
         this.casaProduttrice = casaProduttrice;
         this.modello = modello;
         this.annoDiProduzione = annoDiProduzione;
         this.numeroPosti = numeroPosti;
         this.numeroPorte = numeroPorte;
-        this.capacitàBagagliaio = capacitàBagagliaio;
+        this.capacitaBagagliaio = capacitaBagagliaio;
     }
 
     public String getErrorMessage() {
@@ -101,18 +101,18 @@ public class SchedaTecnica {
         this.numeroPorte = numeroPorte;
     }
 
-    public float getCapacitàBagagliaio() {
-        return capacitàBagagliaio;
+    public float getCapacitaBagagliaio() {
+        return capacitaBagagliaio;
     }
 
-    public void setCapacitàBagagliaio(float capacitàBagagliaio) {
-        this.capacitàBagagliaio = capacitàBagagliaio;
+    public void setCapacitaBagagliaio(float capacitaBagagliaio) {
+        this.capacitaBagagliaio = capacitaBagagliaio;
     }
 
     @Override
     public String toString() {
         return "SchedaTecnica [numeroScheda=" + numeroScheda + ", tipoVeicolo=" + tipoVeicolo + ", casaProduttrice="
                 + casaProduttrice + ", modello=" + modello + ", annoDiProduzione=" + annoDiProduzione + ", numeroPosti="
-                + numeroPosti + ", numeroPorte=" + numeroPorte + ", capacitàBagagliaio=" + capacitàBagagliaio + "]";
+                + numeroPosti + ", numeroPorte=" + numeroPorte + ", capacitaBagagliaio=" + capacitaBagagliaio + "]";
     }
 }

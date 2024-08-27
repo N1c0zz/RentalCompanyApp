@@ -85,8 +85,8 @@ private void registraCliente(BorderPane mainLayout) {
     indirizzo_via.setPromptText("Inserisci la via di residenza");
     TextField indirizzo_numeroCivico = new TextField();
     indirizzo_numeroCivico.setPromptText("Inserisci il numero civico di residenza");
-    TextField indirizzo_città = new TextField();
-    indirizzo_città.setPromptText("Inserisci la città di residenza");
+    TextField indirizzo_citta = new TextField();
+    indirizzo_citta.setPromptText("Inserisci la citta di residenza");
     TextField indirizzo_CAP = new TextField();
     indirizzo_CAP.setPromptText("Inserisci il CAP di residenza");
     TextField numeroDiTelefono = new TextField();
@@ -102,8 +102,8 @@ private void registraCliente(BorderPane mainLayout) {
     fatturazione_via.setPromptText("Inserisci la via dell'indirizzo di fatturazione");
     TextField fatturazione_numeroCivico = new TextField();
     fatturazione_numeroCivico.setPromptText("Inserisci il numero civico dell'indirizzo di fatturazione");
-    TextField fatturazione_città = new TextField();
-    fatturazione_città.setPromptText("Inserisci la città dell'indirizzo di fatturazione");
+    TextField fatturazione_citta = new TextField();
+    fatturazione_citta.setPromptText("Inserisci la citta dell'indirizzo di fatturazione");
     TextField fatturazione_CAP = new TextField();
     fatturazione_CAP.setPromptText("Inserisci il CAP dell'indirizzo di fatturazione");
 
@@ -114,28 +114,28 @@ private void registraCliente(BorderPane mainLayout) {
     response.setMinSize(150, 150);
 
     vbox.getChildren().addAll(codiceFiscale, nome, cognome, indirizzo_via,
-            indirizzo_numeroCivico, indirizzo_città, indirizzo_CAP, numeroDiTelefono,
+            indirizzo_numeroCivico, indirizzo_citta, indirizzo_CAP, numeroDiTelefono,
             indirizzoEmail, numeroPatente, copiaIndirizzoResidenza, fatturazione_via, fatturazione_numeroCivico,
-            fatturazione_città, fatturazione_CAP, aggiungiCliente, response);
+            fatturazione_citta, fatturazione_CAP, aggiungiCliente, response);
 
     copiaIndirizzoResidenza.setOnAction(e -> {
         if (copiaIndirizzoResidenza.isSelected()) {
             fatturazione_via.setText(indirizzo_via.getText());
             fatturazione_numeroCivico.setText(indirizzo_numeroCivico.getText());
-            fatturazione_città.setText(indirizzo_città.getText());
+            fatturazione_citta.setText(indirizzo_citta.getText());
             fatturazione_CAP.setText(indirizzo_CAP.getText());
             fatturazione_via.setDisable(true);
             fatturazione_numeroCivico.setDisable(true);
-            fatturazione_città.setDisable(true);
+            fatturazione_citta.setDisable(true);
             fatturazione_CAP.setDisable(true);
         } else {
             fatturazione_via.clear();
             fatturazione_numeroCivico.clear();
-            fatturazione_città.clear();
+            fatturazione_citta.clear();
             fatturazione_CAP.clear();
             fatturazione_via.setDisable(false);
             fatturazione_numeroCivico.setDisable(false);
-            fatturazione_città.setDisable(false);
+            fatturazione_citta.setDisable(false);
             fatturazione_CAP.setDisable(false);
         }
     });
@@ -158,7 +158,7 @@ private void registraCliente(BorderPane mainLayout) {
         if (indirizzo_numeroCivico.getText().isEmpty()) {
             errors.append("Indirizzo (numero civico) è obbligatorio.\n");
         }
-        if (indirizzo_città.getText().isEmpty()) {
+        if (indirizzo_citta.getText().isEmpty()) {
             errors.append("Città di residenza è obbligatoria.\n");
         }
         if (indirizzo_CAP.getText().isEmpty()) {
@@ -177,7 +177,7 @@ private void registraCliente(BorderPane mainLayout) {
             if (fatturazione_numeroCivico.getText().isEmpty()) {
                 errors.append("Indirizzo di fatturazione (numero civico) è obbligatorio.\n");
             }
-            if (fatturazione_città.getText().isEmpty()) {
+            if (fatturazione_citta.getText().isEmpty()) {
                 errors.append("Città di fatturazione è obbligatoria.\n");
             }
             if (fatturazione_CAP.getText().isEmpty()) {
@@ -212,13 +212,13 @@ private void registraCliente(BorderPane mainLayout) {
         String temp1 = persona.aggiungiPersona(
                 codiceFiscale.getText(), nome.getText(), cognome.getText(),
                 indirizzo_via.getText(), Integer.parseInt(indirizzo_numeroCivico.getText()),
-                indirizzo_città.getText(), indirizzo_CAP.getText(),
+                indirizzo_citta.getText(), indirizzo_CAP.getText(),
                 numeroDiTelefono.getText(), indirizzoEmail.getText());
 
         String temp2 = cliente.aggiungiCliente(
                 codiceFiscale.getText(), numeroPatente.getText(),
                 fatturazione_via.getText(), Integer.parseInt(fatturazione_numeroCivico.getText()),
-                fatturazione_città.getText(), fatturazione_CAP.getText());
+                fatturazione_citta.getText(), fatturazione_CAP.getText());
         if(temp1.equals(temp2)){
             response.setText("Operazione riuscita.");
         } else {

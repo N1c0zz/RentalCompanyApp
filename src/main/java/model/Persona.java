@@ -8,7 +8,7 @@ public class Persona {
     private String cognome;
     private String indirizzo_via;
     private int indirizzo_numeroCivico;
-    private String indirizzo_città;
+    private String indirizzo_citta;
     private int indirizzo_CAP;
     private String numeroDiTelefono;
     private String indirizzoEmail;
@@ -18,7 +18,7 @@ public class Persona {
 
     }
 
-    public Persona(String CF, String ruolo, String nome, String cognome, String indirizzo_via, int indirizzo_numeroCivico, String indirizzo_città,
+    public Persona(String CF, String ruolo, String nome, String cognome, String indirizzo_via, int indirizzo_numeroCivico, String indirizzo_citta,
                    int indirizzo_CAP, String numeroDiTelefono, String indirizzoEmail) {
         super();
         this.CF = CF;
@@ -27,7 +27,7 @@ public class Persona {
         this.cognome = cognome;
         this.indirizzo_via = indirizzo_via;
         this.indirizzo_numeroCivico = indirizzo_numeroCivico;
-        this.indirizzo_città = indirizzo_città;
+        this.indirizzo_citta = indirizzo_citta;
         this.indirizzo_CAP = indirizzo_CAP;
         this.numeroDiTelefono = numeroDiTelefono;
         this.indirizzoEmail = indirizzoEmail;
@@ -89,12 +89,12 @@ public class Persona {
         this.indirizzo_numeroCivico = indirizzo_numeroCivico;
     }
 
-    public String getIndirizzo_città() {
-        return indirizzo_città;
+    public String getIndirizzo_citta() {
+        return indirizzo_citta;
     }
 
-    public void setIndirizzo_città(String indirizzo_città) {
-        this.indirizzo_città = indirizzo_città;
+    public void setIndirizzo_citta(String indirizzo_citta) {
+        this.indirizzo_citta = indirizzo_citta;
     }
 
     public int getIndirizzo_CAP() {
@@ -123,8 +123,8 @@ public class Persona {
     @Override
     public String toString() {
         return "Persone [CF=" + CF + ", ruolo=" + ruolo + ", nome=" + nome + ", cognome=" + cognome + ", indirizzo_via="
-                + indirizzo_via + ", indirizzo_numeroCivico=" + indirizzo_numeroCivico + ", indirizzo_città="
-                + indirizzo_città + ", indirizzo_CAP=" + indirizzo_CAP + ", numeroDiTelefono=" + numeroDiTelefono
+                + indirizzo_via + ", indirizzo_numeroCivico=" + indirizzo_numeroCivico + ", indirizzo_citta="
+                + indirizzo_citta + ", indirizzo_CAP=" + indirizzo_CAP + ", numeroDiTelefono=" + numeroDiTelefono
                 + ", indirizzoEmail=" + indirizzoEmail + "]";
     }
 

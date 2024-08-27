@@ -45,7 +45,7 @@ public class VehicleScene {
         VBox sideMenu = new VBox(10);
         sideMenu.setPadding(new Insets(10));
         Button operazione1Button = new Button("Registrazione di un nuovo veicolo");
-        Button operazione2Button = new Button("Disponibilità di un veicolo");
+        Button operazione2Button = new Button("Disponibilita di un veicolo");
         Button operazione3Button = new Button("Scheda tecnica di un veicolo");
         Button operazione4Button = new Button("Veicoli più noleggiati");
         Button operazione5Button = new Button("Tasso di utilizzo di un veicolo");
@@ -166,7 +166,7 @@ public class VehicleScene {
     private void disponibilitaVeicolo(BorderPane mainLayout) {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
-        vbox.getChildren().add(new Label("Controlla la disponibilità di un veicolo"));
+        vbox.getChildren().add(new Label("Controlla la disponibilita di un veicolo"));
 
         TextField idVeicolo = new TextField();
         idVeicolo.setPromptText("Id del veicolo da cercare");
@@ -177,7 +177,7 @@ public class VehicleScene {
         TextField dataFine = new TextField();
         dataFine.setPromptText("Inserisci la data di fine nel formato: anno-mese-giorno");
 
-        Button verificaDisponibilita = new Button("Verifica Disponibilità");
+        Button verificaDisponibilita = new Button("Verifica Disponibilita");
 
         TextField response = new TextField();
         response.setPromptText("Response");
@@ -268,8 +268,8 @@ public class VehicleScene {
         TableColumn<SchedaTecnica, String> numeroPorte = new TableColumn<>("Numero Porte");
         numeroPorte.setCellValueFactory(cellData -> new SimpleStringProperty(Integer.toString(cellData.getValue().getNumeroPorte())));
     
-        TableColumn<SchedaTecnica, String> bagagliaio = new TableColumn<>("Capacità Bagagliaio");
-        bagagliaio.setCellValueFactory(cellData -> new SimpleStringProperty(Float.toString(cellData.getValue().getCapacitàBagagliaio())));
+        TableColumn<SchedaTecnica, String> bagagliaio = new TableColumn<>("Capacita Bagagliaio");
+        bagagliaio.setCellValueFactory(cellData -> new SimpleStringProperty(Float.toString(cellData.getValue().getCapacitaBagagliaio())));
     
         table.getColumns().addAll(numeroScheda, tipoVeicolo, casaProduttrice, modello, annoDiProduzione,
                                     numeroPosti, numeroPorte, bagagliaio);

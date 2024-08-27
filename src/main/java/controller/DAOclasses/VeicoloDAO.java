@@ -120,7 +120,7 @@ public class VeicoloDAO {
         String query =  " SELECT CASE WHEN EXISTS (SELECT * FROM prenotazioni p JOIN utilizzi u ON p.codPrenotazione = u.idPrenotazione" +
                         " WHERE u.numVeicolo = ? AND ? <= p.dataFine" +
                         " AND ? >= p.dataInizio)" +
-                        " THEN 'Esiste già una prenotazione in questo intervallo di date per questo veicolo'" +
+                        " THEN 'Esiste gia una prenotazione in questo intervallo di date per questo veicolo'" +
                         " ELSE 'La prenotazione per questo veicolo può essere effettuata'"+
                         " END AS risultato";
 

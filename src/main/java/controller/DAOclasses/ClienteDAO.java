@@ -24,7 +24,7 @@ public class ClienteDAO {
      */
     public String aggiungiCliente(String CF, String patente, String via, int numeroCivico, String citta, String CAP) {
         String query = "INSERT INTO clienti (CFCliente, numeroPatenteGuida, indirizzoFatturazione_via, indirizzoFatturazione_numeroCivico,"+ 
-                        "indirizzoFatturazione_città, indirizzoFatturazione_CAP) VALUES (?, ?, ?, ?, ?, ?)"; 
+                        "indirizzoFatturazione_citta, indirizzoFatturazione_CAP) VALUES (?, ?, ?, ?, ?, ?)"; 
         try (Connection conn = dbHandler.setSQLDataSource().getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
                 pstmt.setString(1, CF);

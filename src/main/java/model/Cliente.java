@@ -6,7 +6,7 @@ public class Cliente {
     private String numeroPatenteGuida;
     private String indirizzoFatturazione_via;
     private int indirizzoFatturazione_numeroCivico;
-    private String indirizzoFatturazione_città;
+    private String indirizzoFatturazione_citta;
     private int indirizzoFatturazione_CAP;
     private int numeroNoleggiConclusi;
     private String errorMessage;
@@ -16,13 +16,13 @@ public class Cliente {
     }
 
     public Cliente(String CFCliente, String numeroPatenteGuida, String indirizzoFatturazione_via, int indirizzoFatturazione_numeroCivico,
-                    String indirizzoFatturazione_città, int indirizzoFatturazione_CAP, int numeroNoleggiConclusi) {
+                    String indirizzoFatturazione_citta, int indirizzoFatturazione_CAP, int numeroNoleggiConclusi) {
 
         this.CFCliente = CFCliente;
         this.numeroPatenteGuida = numeroPatenteGuida;
         this.indirizzoFatturazione_via = indirizzoFatturazione_via;
         this.indirizzoFatturazione_numeroCivico = indirizzoFatturazione_numeroCivico;
-        this.indirizzoFatturazione_città = indirizzoFatturazione_città;
+        this.indirizzoFatturazione_citta = indirizzoFatturazione_citta;
         this.indirizzoFatturazione_CAP = indirizzoFatturazione_CAP;
         this.numeroNoleggiConclusi = numeroNoleggiConclusi;
     }
@@ -59,11 +59,11 @@ public class Cliente {
     public void setIndirizzoFatturazione_numeroCivico(int indirizzoFatturazione_numeroCivico) {
         this.indirizzoFatturazione_numeroCivico = indirizzoFatturazione_numeroCivico;
     }
-    public String getIndirizzoFatturazione_città() {
-        return indirizzoFatturazione_città;
+    public String getIndirizzoFatturazione_citta() {
+        return indirizzoFatturazione_citta;
     }
-    public void setIndirizzoFatturazione_città(String indirizzoFatturazione_città) {
-        this.indirizzoFatturazione_città = indirizzoFatturazione_città;
+    public void setIndirizzoFatturazione_citta(String indirizzoFatturazione_citta) {
+        this.indirizzoFatturazione_citta = indirizzoFatturazione_citta;
     }
     public int getIndirizzoFatturazione_CAP() {
         return indirizzoFatturazione_CAP;
@@ -81,7 +81,7 @@ public class Cliente {
     public String toString() {
         return "Cliente [CFCliente=" + CFCliente + ", numeroPatenteGuida=" + numeroPatenteGuida
                 + ", indirizzoFatturazione_via=" + indirizzoFatturazione_via + ", indirizzoFatturazione_numeroCivico="
-                + indirizzoFatturazione_numeroCivico + ", indirizzoFatturazione_città=" + indirizzoFatturazione_città
+                + indirizzoFatturazione_numeroCivico + ", indirizzoFatturazione_citta=" + indirizzoFatturazione_citta
                 + ", indirizzoFatturazione_CAP=" + indirizzoFatturazione_CAP + ", numeroNoleggiConclusi="
                 + numeroNoleggiConclusi + "]";
     }
