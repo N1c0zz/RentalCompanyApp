@@ -1,9 +1,8 @@
-package src.main.java.application;
+package src;
 
 import javafx.application.*;
 import javafx.stage.Stage;
-import src.main.java.application.view.StartScene;
-
+import src.view.StartScene;
 
 public class RentalCompanyApp extends Application {
 
