@@ -22,26 +22,48 @@ public class VeicoloDAO {
      * @param veicolo
      */
     public String aggiungiVeicolo(int schedaTecnica, String targa, int chilometraggio, float costoPerGiornata) {
-
         String query = "INSERT INTO veicoli (schedaTecnica, targa, chilometraggio, costoPerGiornata) VALUES (?, ?, ?, ?)";
-        try (Connection conn = dbHandler.setSQLDataSource().getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
+    
+        Connection conn = null;
+        try {
+            conn = dbHandler.setSQLDataSource().getConnection();
+            conn.setAutoCommit(false);
+    
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
                 pstmt.setInt(1, schedaTecnica);
                 pstmt.setString(2, targa);
                 pstmt.setInt(3, chilometraggio);
                 pstmt.setFloat(4, costoPerGiornata);
                 int affRows = pstmt.executeUpdate();
-
-                if(affRows > 0){
+    
+                if (affRows > 0) {
+                    conn.commit();
                     return "Inserimento avvenuto con successo";
                 } else {
+                    conn.rollback();
                     return "Inserimento non riuscito";
                 }
-                
-            } catch (SQLException e) {
-                return e.getMessage();
             }
+        } catch (SQLException e) {
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException rollbackEx) {
+                    rollbackEx.printStackTrace();
+                }
+            }
+            return e.getMessage();
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException closeEx) {
+                    closeEx.printStackTrace();
+                }
+            }
+        }
     }
+    
     /*
      * OP12 - TASSO DI UTILIZZO DI UN VEICOLO
      */

@@ -14,6 +14,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
@@ -108,8 +109,9 @@ private void registraCliente(BorderPane mainLayout) {
     fatturazione_CAP.setPromptText("Inserisci il CAP dell'indirizzo di fatturazione");
 
     Button aggiungiCliente = new Button("Aggiungi Nuovo Cliente");
-    TextField response = new TextField();
+    TextArea response = new TextArea();
     response.setPromptText("Response");
+    response.setPrefRowCount(5);
     response.setEditable(false);
     response.setMinSize(150, 150);
 
@@ -222,7 +224,8 @@ private void registraCliente(BorderPane mainLayout) {
         if(temp1.equals(temp2)){
             response.setText("Operazione riuscita.");
         } else {
-            response.setText("Operazione non riuscita. Riprovare.");
+            response.setText("Operazione non riuscita. Riprovare" + "\nDettagli errore: " 
+                        + "\nInserimento Persona :" + temp1 + "\nInserimento Cliente: " + temp2);
         }
     });
 
@@ -312,7 +315,7 @@ private void registraCliente(BorderPane mainLayout) {
 
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
-        vbox.getChildren().add(new Label("Visualizza i 10 clienti con più noleggi"));
+        vbox.getChildren().add(new Label("Visualizza i 10 clienti con piu' noleggi"));
 
         TextField response = new TextField();
         response.setPromptText("Response");

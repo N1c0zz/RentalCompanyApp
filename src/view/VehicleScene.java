@@ -47,7 +47,7 @@ public class VehicleScene {
         Button operazione1Button = new Button("Registrazione di un nuovo veicolo");
         Button operazione2Button = new Button("Disponibilita di un veicolo");
         Button operazione3Button = new Button("Scheda tecnica di un veicolo");
-        Button operazione4Button = new Button("Veicoli più noleggiati");
+        Button operazione4Button = new Button("Veicoli piu' noleggiati");
         Button operazione5Button = new Button("Tasso di utilizzo di un veicolo");
 
         operazione1Button.setOnAction(e -> {
@@ -311,8 +311,8 @@ public class VehicleScene {
     private void veicoliPiuNoleggiati(BorderPane mainLayout) {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
-        vbox.getChildren().add(new Label("Visualizza i veicoli più noleggiati"));
-        Button visualizzaClassifica = new Button("Visualizza i veicoli più noleggiati");
+        vbox.getChildren().add(new Label("Visualizza i veicoli piu' noleggiati"));
+        Button visualizzaClassifica = new Button("Visualizza i veicoli piu' noleggiati");
         TextField response = new TextField();
         response.setPromptText("Response");
         response.setEditable(false);

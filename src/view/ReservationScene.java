@@ -67,50 +67,63 @@ public class ReservationScene {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
         vbox.getChildren().add(new Label("Registra una nuova prenotazione"));
-
+    
         TextField cliente = new TextField();
         cliente.setPromptText("Inserisci il codice fiscale del cliente");
-
+    
         TextField dataInizio = new TextField();
         dataInizio.setPromptText("Inserisci la data di inizio prenotazione (formato anno-mese-giorno)");
-
+    
         TextField dataFine = new TextField();
         dataFine.setPromptText("Inserisci la data di fine prenotazione (formato anno-mese-giorno)");
-
-        TextField veicoloRichiesto = new TextField();
-        veicoloRichiesto.setPromptText("Inserisci l'id del veicolo richiesto");
-
+    
+        TextField veicoloRichiesto1 = new TextField();
+        veicoloRichiesto1.setPromptText("Inserisci l'id del veicolo richiesto");
+    
+        TextField veicoloRichiesto2 = new TextField();
+        veicoloRichiesto2.setPromptText("Inserisci l'id del secondo veicolo");
+        veicoloRichiesto2.setVisible(false);
+    
         ComboBox<Integer> numeroVeicoliRichiesti = new ComboBox<>();
         numeroVeicoliRichiesti.setPromptText("Scegli il numero di veicoli richiesti");
         numeroVeicoliRichiesti.setItems(FXCollections.observableArrayList(1, 2));
         numeroVeicoliRichiesti.setEditable(false);
-
+    
         Button registraPrenotazione = new Button("Registra prenotazione");
-
+    
         TextField response = new TextField();
         response.setPromptText("Response");
         response.setEditable(false);
         response.setMinSize(200, 200);
-
-        vbox.getChildren().addAll(cliente, dataInizio, dataFine, veicoloRichiesto,
-                                numeroVeicoliRichiesti, registraPrenotazione, response);
-
+    
+        vbox.getChildren().addAll(cliente, dataInizio, dataFine, veicoloRichiesto1, veicoloRichiesto2,
+                                  numeroVeicoliRichiesti, registraPrenotazione, response);
+    
+        numeroVeicoliRichiesti.setOnAction(e -> {
+            Integer numVeicoli = numeroVeicoliRichiesti.getValue();
+            if (numVeicoli != null && numVeicoli == 2) {
+                veicoloRichiesto2.setVisible(true);
+            } else {
+                veicoloRichiesto2.setVisible(false);
+            }
+        });
+    
         registraPrenotazione.setOnAction(e -> {
             String codiceFiscale = cliente.getText().trim();
             String startDateStr = dataInizio.getText().trim();
             String endDateStr = dataFine.getText().trim();
-            String veicoloStr = veicoloRichiesto.getText().trim();
-
+            String veicoloStr1 = veicoloRichiesto1.getText().trim();
+    
             if (codiceFiscale.isEmpty()) {
                 response.setText("Errore: Il codice fiscale non può essere vuoto.");
                 return;
             }
-
+    
             LocalDate dataInizioParsed, dataFineParsed;
             try {
                 dataInizioParsed = LocalDate.parse(startDateStr);
                 dataFineParsed = LocalDate.parse(endDateStr);
-
+    
                 if (dataFineParsed.isBefore(dataInizioParsed)) {
                     response.setText("Errore: La data di fine prenotazione non può essere precedente alla data di inizio.");
                     return;
@@ -119,32 +132,41 @@ public class ReservationScene {
                 response.setText("Errore: Le date devono essere nel formato 'anno-mese-giorno'.");
                 return;
             }
-
-            int veicoloId;
+    
+            int veicoloId1;
             try {
-                veicoloId = Integer.parseInt(veicoloStr);
+                veicoloId1 = Integer.parseInt(veicoloStr1);
             } catch (NumberFormatException ex) {
                 response.setText("Errore: L'id del veicolo deve essere un numero intero valido.");
                 return;
             }
-
+    
             Integer numVeicoli = numeroVeicoliRichiesti.getValue();
             if (numVeicoli == null) {
                 response.setText("Errore: Seleziona il numero di veicoli richiesti.");
                 return;
             }
-
+    
             String temp1;
             if (numVeicoli == 1) {
-                temp1 = prenotazione.registraPrenotazione(codiceFiscale, startDateStr, endDateStr, veicoloId);
+                temp1 = prenotazione.registraPrenotazione(codiceFiscale, startDateStr, endDateStr, veicoloId1);
             } else {
-                temp1 = prenotazione.registraDoppiaPrenotazione(codiceFiscale, startDateStr, endDateStr, veicoloId);
+                String veicoloStr2 = veicoloRichiesto2.getText().trim();
+                int veicoloId2;
+                try {
+                    veicoloId2 = Integer.parseInt(veicoloStr2);
+                } catch (NumberFormatException ex) {
+                    response.setText("Errore: L'id del secondo veicolo deve essere un numero intero valido.");
+                    return;
+                }
+                temp1 = prenotazione.registraDoppiaPrenotazione(codiceFiscale, startDateStr, endDateStr, veicoloId1, veicoloId2);
             }
             response.setText(temp1);
         });
-
+    
         mainLayout.setCenter(vbox);
     }
+    
 
 
     private void modificaPrenotazione(BorderPane mainLayout) {

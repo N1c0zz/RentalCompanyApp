@@ -19,11 +19,16 @@ public class PersonaDAO {
      * @param persona
      */
     public String aggiungiPersona(String CF, String nome, String cognome, String via, int civico, String citta,
-                            String CAP, String numeroTelefono, String indirizzoEmail) {
-        String query = "INSERT INTO persone (codiceFiscale, nome, cognome, indirizzo_via, indirizzo_numeroCivico, indirizzo_citta,"+ 
-                        "indirizzo_CAP, numeroDiTelefono, indirizzoEmail) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conn = dbHandler.setSQLDataSource().getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
+                                String CAP, String numeroTelefono, String indirizzoEmail) {
+        String query = "INSERT INTO persone (codiceFiscale, nome, cognome, indirizzo_via, indirizzo_numeroCivico, indirizzo_citta, " +
+                    "indirizzo_CAP, numeroDiTelefono, indirizzoEmail) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        Connection conn = null;
+        try {
+            conn = dbHandler.setSQLDataSource().getConnection();
+            conn.setAutoCommit(false);
+
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
                 pstmt.setString(1, CF);
                 pstmt.setString(2, nome);
                 pstmt.setString(3, cognome);
@@ -34,16 +39,33 @@ public class PersonaDAO {
                 pstmt.setString(8, numeroTelefono);
                 pstmt.setString(9, indirizzoEmail);
                 int affRows = pstmt.executeUpdate();
-                
-                if(affRows > 0) {
+
+                if (affRows > 0) {
+                    conn.commit();
                     return "Inserimento avvenuto correttamente";
-                    
-                }else {
+                } else {
+                    conn.rollback();
                     return "Inserimento non riuscito. Riprovare.";
                 }
-
-            } catch (SQLException e) {
-                return e.getMessage();
             }
+        } catch (SQLException e) {
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException rollbackEx) {
+                    rollbackEx.printStackTrace();
+                }
+            }
+            return e.getMessage();
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException closeEx) {
+                    closeEx.printStackTrace();
+                }
+            }
+        }
     }
+
 }

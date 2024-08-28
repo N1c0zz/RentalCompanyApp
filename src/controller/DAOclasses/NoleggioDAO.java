@@ -24,11 +24,11 @@ public class NoleggioDAO {
      * @param noleggio
      */
     public String attivaNoleggio(int codPrenotazione) {
-        String query = "INSERT INTO noleggi (codPrenotazione, idVeicolo, costo)" +
-                        "SELECT u.codPrenotazione, u.idVeicolo, (DATEDIFF(p.dataFine, p.dataInizio) + 1) * v.costoPerGiornata AS costo" +
-                        "FROM utilizzi u JOIN prenotazioni p ON u.idPrenotazione = p.codPrenotazione" +
-                        "JOIN veicoli v ON u.numVeicolo = v.idVeicolo" +
-                        "WHERE p.codPrenotazione = ?";
+        String query = "INSERT INTO noleggi (codPrenotazione, veicolo, costo)" +
+                        " SELECT u.idPrenotazione, u.numVeicolo, (DATEDIFF(p.dataFine, p.dataInizio) + 1) * v.costoPerGiornata AS costo" +
+                        " FROM utilizzi u JOIN prenotazioni p ON u.idPrenotazione = p.codPrenotazione" +
+                        " JOIN veicoli v ON u.numVeicolo = v.idVeicolo" +
+                        " WHERE p.codPrenotazione = ?";
 
         try (Connection conn = dbHandler.setSQLDataSource().getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -56,29 +56,56 @@ public class NoleggioDAO {
      * @param noleggio
      */
     public String terminaNoleggio(int codNoleggioDaModificare) {
-        String query = "UPDATE prenotazioni AS p" +
-                        " JOIN clienti AS c ON c.CFCliente = p.cliente" +
-                        " JOIN noleggi AS v ON v.codPrenotazione = p.codPrenotazione" +
-                        " SET p.statoPrenotazione = \"Conclusa\", c.numeroNoleggiConclusi = c.numeroNoleggiConclusi + p.numeroNoleggiRichiesti" +
-                        " WHERE v.codNoleggio = ?; " +
-                        "DELETE FROM utilizzi WHERE idPrenotazione = (SELECT codPrenotazione FROM noleggi WHERE codNoleggio = ?); " +
-                        "DELETE FROM noleggi WHERE codNoleggio = ?";
-
-        try (Connection conn = dbHandler.setSQLDataSource().getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
-                pstmt.setInt(1, codNoleggioDaModificare);
-                pstmt.setInt(2, codNoleggioDaModificare);
-                pstmt.setInt(3, codNoleggioDaModificare);
-
-                int affRows = pstmt.executeUpdate();
-
-                if(affRows > 0)
-                    return "Noleggio terminato correttamente";
-                else
-                    return "Terminazione noleggio non riuscita. Riprovare";
-
-            } catch (SQLException e) {
-                return e.getMessage();
+        String queryAggiornaPrenotazione = "UPDATE prenotazioni AS p " +
+                                           "JOIN clienti AS c ON c.CFCliente = p.cliente " +
+                                           "SET p.statoPrenotazione = 'Conclusa', " +
+                                           "c.numeroNoleggiConclusi = c.numeroNoleggiConclusi + p.numeroNoleggiRichiesti " +
+                                           "WHERE p.codPrenotazione = (SELECT codPrenotazione FROM noleggi WHERE codNoleggio = ?)";
+    
+        String queryEliminaUtilizzi = "DELETE FROM utilizzi WHERE idPrenotazione = " +
+                                       "(SELECT codPrenotazione FROM noleggi WHERE codNoleggio = ?)";
+    
+        Connection conn = null;
+        try {
+            conn = dbHandler.setSQLDataSource().getConnection();
+            conn.setAutoCommit(false);
+    
+            int affRowsPrenotazione;
+            try (PreparedStatement pstmtAggiornaPrenotazione = conn.prepareStatement(queryAggiornaPrenotazione)) {
+                pstmtAggiornaPrenotazione.setInt(1, codNoleggioDaModificare);
+                affRowsPrenotazione = pstmtAggiornaPrenotazione.executeUpdate();
             }
+    
+            int affRowsUtilizzi;
+            try (PreparedStatement pstmtEliminaUtilizzi = conn.prepareStatement(queryEliminaUtilizzi)) {
+                pstmtEliminaUtilizzi.setInt(1, codNoleggioDaModificare);
+                affRowsUtilizzi = pstmtEliminaUtilizzi.executeUpdate();
+            }
+    
+            if (affRowsPrenotazione > 0 && affRowsUtilizzi > 0) {
+                conn.commit();
+                return "Noleggio terminato correttamente";
+            } else {
+                conn.rollback();
+                return "Terminazione noleggio non riuscita. Riprovare";
+            }
+        } catch (SQLException e) {
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException rollbackEx) {
+                    rollbackEx.printStackTrace();
+                }
+            }
+            return e.getMessage();
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException closeEx) {
+                    closeEx.printStackTrace();
+                }
+            }
+        }
     }
 }

@@ -21,33 +21,56 @@ public class SanzioneDAO {
      * @param costoApplicato
      */
     public String emettiSanzione(int codPrenotazione, String motivazione, float costoApplicato) {
+        String queryInserisciSanzione = "INSERT INTO sanzioni (motivazione, costoApplicato) VALUES (?, ?)";
+        String queryInserisciInclusione = "INSERT INTO inclusioni (fattura, codSanzione) VALUES ((SELECT numeroFattura FROM fatture WHERE prenotazione = ?), LAST_INSERT_ID())";
+        String queryAggiornaFattura = "UPDATE fatture SET importoTotale = importoTotale + (SELECT SUM(s.costoApplicato) FROM inclusioni i JOIN sanzioni s ON i.codSanzione = s.codSanzione WHERE i.fattura = (SELECT fattura FROM inclusioni WHERE codSanzione = LAST_INSERT_ID())) WHERE prenotazione = ?";
+    
+        Connection conn = null;
+        try {
+            conn = dbHandler.setSQLDataSource().getConnection();
+            conn.setAutoCommit(false);
+    
+            try (PreparedStatement pstmtInserisciSanzione = conn.prepareStatement(queryInserisciSanzione)) {
+                pstmtInserisciSanzione.setString(1, motivazione);
+                pstmtInserisciSanzione.setFloat(2, costoApplicato);
+                int affRowsSanzione = pstmtInserisciSanzione.executeUpdate();
+    
+                try (PreparedStatement pstmtInserisciInclusione = conn.prepareStatement(queryInserisciInclusione)) {
+                    pstmtInserisciInclusione.setInt(1, codPrenotazione);
+                    int affRowsInclusione = pstmtInserisciInclusione.executeUpdate();
 
-        String query = "INSERT INTO sanzioni (motivazione, costoApplicato) VALUES (?, ?);" +
-                        "INSERT INTO inclusioni (fattura, codSanzione) VALUES ((SELECT numeroFattura" +
-                        " FROM fatture WHERE prenotazione = ?), LAST_INSERT_ID());" +
-                        "UPDATE fatture SET importoTotale = importoTotale + (SELECT SUM(s.costoApplicato)" +
-                        " FROM inclusioni i JOIN sanzioni s ON i.codSanzione = s.codSanzione WHERE i.fattura" +
-                        " = (SELECT fattura FROM inclusioni WHERE codSanzione = LAST_INSERT_ID()))" +
-                        " WHERE prenotazione = ?";
-
-        try (Connection conn = dbHandler.setSQLDataSource().getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
-
-                pstmt.setString(1, motivazione);
-                pstmt.setFloat(2, costoApplicato);
-                pstmt.setInt(3, codPrenotazione);
-                pstmt.setInt(4, codPrenotazione);
-
-                int affRows = pstmt.executeUpdate();
-
-                if(affRows > 0){
-                    return "Sanzione generata correttamente";
-                } else {
-                    return "Generazione non riuscita. Riprovare";
+                    try (PreparedStatement pstmtAggiornaFattura = conn.prepareStatement(queryAggiornaFattura)) {
+                        pstmtAggiornaFattura.setInt(1, codPrenotazione);
+                        int affRowsFattura = pstmtAggiornaFattura.executeUpdate();
+    
+                        if (affRowsSanzione > 0 && affRowsInclusione > 0 && affRowsFattura > 0) {
+                            conn.commit();
+                            return "Sanzione generata correttamente";
+                        } else {
+                            conn.rollback();
+                            return "Generazione non riuscita. Riprovare";
+                        }
+                    }
                 }
-                
-            } catch (SQLException e) {
-                return e.getMessage();
             }
+        } catch (SQLException e) {
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException rollbackEx) {
+                    rollbackEx.printStackTrace();
+                }
+            }
+            return e.getMessage();
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException closeEx) {
+                    closeEx.printStackTrace();
+                }
+            }
+        }
     }
+    
 }
