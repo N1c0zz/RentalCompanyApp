@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>C:\Users\nicom\Desktop\PROGETTO DATABASE\ProgettoAziendaNoleggio\AppNoleggio.jar</jar>
+  <outfile>C:\Users\nicom\Desktop\PROGETTO DATABASE\ProgettoAziendaNoleggio\AppNoleggio.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine></cmdLine>
+  <chdir>.</chdir>
+  <priority>normal</priority>
+  <downloadUrl></downloadUrl>
+  <supportUrl></supportUrl>
+  <stayAlive>false</stayAlive>
+  <restartOnCrash>false</restartOnCrash>
+  <manifest></manifest>
+  <icon></icon>
+  <jre>
+    <path>%JAVA_HOME%;%PATH%</path>
+    <requiresJdk>true</requiresJdk>
+    <requires64Bit>false</requires64Bit>
+    <minVersion>17</minVersion>
+    <maxVersion></maxVersion>
+    <opt>--module-path C:/Users/nicom/Documents/JavaFX_SDK/javafx-sdk-22.0.2/lib --add-modules javafx.controls,javafx.fxml -cp &quot;AppNoleggio.jar;C:/Users/nicom/Documents/MySQL-Connector/mysql-connector-j-8.3.0.jar&quot; src.RentalCompanyApp</opt>
+  </jre>
+</launch4jConfig>
